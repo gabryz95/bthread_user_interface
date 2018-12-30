@@ -1,6 +1,6 @@
 package gui.event;
 
-import gui.model.MyData;
+import gui.model.date.MyData;
 import lombok.Getter;
 
 @Getter

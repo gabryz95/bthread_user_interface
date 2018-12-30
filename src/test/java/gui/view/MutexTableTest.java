@@ -1,6 +1,6 @@
 package gui.view;
 
-import gui.model.Semaphore;
+import gui.model.date.Semaphore;
 import gui.view.table.MutexTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

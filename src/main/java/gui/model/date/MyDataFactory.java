@@ -1,4 +1,4 @@
-package gui.model;
+package gui.model.date;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,7 +17,7 @@ public class MyDataFactory {
         MyData data = null;
 
         try {
-            c = Class.forName("gui.model." + name);
+            c = Class.forName("gui.model.date." + name);
             Method method = c.getMethod("create", String.class);
             data = (MyData) method.invoke(method, line);
         } catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {

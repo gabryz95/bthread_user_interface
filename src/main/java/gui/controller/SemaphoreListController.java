@@ -1,6 +1,6 @@
 package gui.controller;
 
-import gui.model.Semaphore;
+import gui.model.date.Semaphore;
 import gui.view.MainWindowView;
 import javafx.collections.ObservableList;
 

@@ -1,11 +1,10 @@
 package gui.model;
 
+import gui.model.date.MyData;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-
-import static org.junit.Assert.*;
 
 public class MyDataTest {
 

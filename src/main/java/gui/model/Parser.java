@@ -36,17 +36,17 @@ public class Parser extends Observable {
         String discriminated = line.substring(1, 4);
 
         if (discriminated.equalsIgnoreCase("MUT")) {
-            //MutexEvent mutexEvent = MutexEvent.create(line);
             this.setChanged();
             notifyObservers(MyDataEventFactory.create("MutexEvent", line));
         } else if (discriminated.equalsIgnoreCase("SEM")) {
-            //SemaphoreEvent semaphoreEvent = SemaphoreEvent.create(line);
             this.setChanged();
             notifyObservers(MyDataEventFactory.create("SemaphoreEvent", line));
         } else if (discriminated.equalsIgnoreCase("BAR")) {
-
+            this.setChanged();
+            notifyObservers(MyDataEventFactory.create("BarrierEvent", line));
         } else if (discriminated.equalsIgnoreCase("CON")) {
-
+            this.setChanged();
+            notifyObservers(MyDataEventFactory.create("ConditionEvent", line));
         }
     }
 }

@@ -1,6 +1,6 @@
 package gui.view.table;
 
-import gui.model.Mutex;
+import gui.model.date.Mutex;
 import gui.style.Style;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;

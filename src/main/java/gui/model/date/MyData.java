@@ -1,4 +1,4 @@
-package gui.model;
+package gui.model.date;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -7,10 +7,10 @@ public abstract class MyData {
 
     protected SimpleStringProperty address;
     protected SimpleIntegerProperty threadId;
-    protected String status;
+    protected SimpleStringProperty status;
 
     public String getStatus() {
-        return status;
+        return status.get();
     }
 
     public int getThreadId() {

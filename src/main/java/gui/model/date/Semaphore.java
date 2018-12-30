@@ -1,4 +1,4 @@
-package gui.model;
+package gui.model.date;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,13 +10,13 @@ public class Semaphore extends MyData {
     protected SimpleIntegerProperty counter;
 
     private Semaphore(String status, Integer threadId, String queue) {
-        this.status = status;
+        this.status = new SimpleStringProperty(status);
         this.threadId = new SimpleIntegerProperty(threadId);
         this.queue = new SimpleStringProperty(queue);
     }
 
     private Semaphore(String status, Integer threadId, String address, Integer counter, String queue) {
-        this.status = status;
+        this.status = new SimpleStringProperty(status);
         this.threadId = new SimpleIntegerProperty(threadId);
         this.address = new SimpleStringProperty(address);
         this.counter = new SimpleIntegerProperty(counter);
@@ -64,6 +64,6 @@ public class Semaphore extends MyData {
     }
 
     public String getStatus() {
-        return status;
+        return status.get();
     }
 }

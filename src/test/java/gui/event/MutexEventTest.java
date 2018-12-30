@@ -11,19 +11,19 @@ public class MutexEventTest {
 
     @Test
     public void create01() {
-        mutexEvent = MutexEvent.create(null);
+        mutexEvent = (MutexEvent) MutexEvent.create(null);
         assertNull(mutexEvent);
     }
 
     @Test
     public void create02() {
-        mutexEvent = MutexEvent.create("(MUTEX) 1 0x623747");
+        mutexEvent = (MutexEvent) MutexEvent.create("(MUTEX) 1 0x623747");
         assertNotNull(mutexEvent);
     }
 
     @Test
     public void getMutex() {
-        mutexEvent = MutexEvent.create("(MUTEX) 1 0x623747");
+        mutexEvent = (MutexEvent) MutexEvent.create("(MUTEX) 1 0x623747");
         assertNotNull(mutexEvent.data);
         assertEquals(mutexEvent.data, mutexEvent.getData());
 

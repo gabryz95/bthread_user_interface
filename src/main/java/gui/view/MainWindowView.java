@@ -4,6 +4,10 @@ import gui.controller.ProcessController;
 import gui.mediator.CreateMediator;
 import gui.mediator.MenuBarMediator;
 import gui.model.*;
+import gui.model.date.Barrier;
+import gui.model.date.Condition;
+import gui.model.date.Mutex;
+import gui.model.date.Semaphore;
 import gui.style.Style;
 import gui.view.ganttchart.GantChartInitialize;
 import gui.view.menubar.MenuBarView;
@@ -42,7 +46,10 @@ public class MainWindowView {
     //liste riferite alle tabelle
     private static ObservableList<Mutex> mutexList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Semaphore> semaphoreList = FXCollections.observableArrayList(new ArrayList<>());
+    private static ObservableList<Barrier> barrierList = FXCollections.observableArrayList(new ArrayList<>());
+    private static ObservableList<Condition> conditionList = FXCollections.observableArrayList(new ArrayList<>());
     public static AtomicReference<List<Bthread>> bthreadList = new AtomicReference<>(new ArrayList<>());
+
 
     //TODO: creare qui OPT e passare questa ref al model
     public void showInterface(Stage primaryStage) {
@@ -72,7 +79,7 @@ public class MainWindowView {
 
 
         //Mediators
-        CreateMediator createMediator = CreateMediator.create(mutexList, semaphoreList);
+        CreateMediator createMediator = CreateMediator.create(mutexList, semaphoreList, barrierList, conditionList);
 
         MenuBarMediator menuBarMediator = MenuBarMediator.create();
         menuBarMediator.setStartProcessMenuItem(menubar.getStartProcessItemMenu());

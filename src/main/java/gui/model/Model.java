@@ -5,6 +5,8 @@ import gui.event.ChooseFileEvent;
 import gui.event.ExitEvent;
 import gui.event.MonitoringStartedEvent;
 import gui.interfaces.ProcessManager;
+import gui.model.date.Mutex;
+import gui.model.date.Semaphore;
 import gui.singleton.MainProcess;
 import gui.view.MainWindowView;
 import javafx.collections.ObservableList;

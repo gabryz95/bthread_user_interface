@@ -1,6 +1,6 @@
 package gui.controller;
 
-import gui.model.Mutex;
+import gui.model.date.Mutex;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.Before;

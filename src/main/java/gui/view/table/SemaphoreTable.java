@@ -1,6 +1,6 @@
 package gui.view.table;
 
-import gui.model.Semaphore;
+import gui.model.date.Semaphore;
 import gui.style.Style;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;

@@ -1,6 +1,6 @@
 package gui.controller;
 
-import gui.model.Mutex;
+import gui.model.date.Mutex;
 import gui.view.MainWindowView;
 
 

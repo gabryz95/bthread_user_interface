@@ -1,4 +1,4 @@
-package gui.model;
+package gui.model.date;
 
 import org.junit.Before;
 import org.junit.Test;

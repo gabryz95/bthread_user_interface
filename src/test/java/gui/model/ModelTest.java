@@ -1,5 +1,7 @@
 package gui.model;
 
+import gui.model.date.Mutex;
+import gui.model.date.Semaphore;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.Before;

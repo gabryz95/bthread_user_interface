@@ -10,19 +10,19 @@ public class SemaphoreEventTest {
 
     @Test
     public void create01() {
-        semaphoreEvent = SemaphoreEvent.create(null);
+        semaphoreEvent = (SemaphoreEvent) SemaphoreEvent.create(null);
         assertNull(semaphoreEvent);
     }
 
     @Test
     public void create02() {
-        semaphoreEvent = SemaphoreEvent.create("(SEMAPHORE) 1 0x623747 0");
+        semaphoreEvent = (SemaphoreEvent) SemaphoreEvent.create("(SEMAPHORE) 1 0x623747 0");
         assertNotNull(semaphoreEvent);
     }
 
     @Test
     public void getSemaphore() {
-        semaphoreEvent = SemaphoreEvent.create("(SEMAPHORE) 1 0x623747 0");
+        semaphoreEvent = (SemaphoreEvent) SemaphoreEvent.create("(SEMAPHORE) 1 0x623747 0");
         assertNotNull(semaphoreEvent.data);
         assertEquals(semaphoreEvent.data, semaphoreEvent.getData());
     }
