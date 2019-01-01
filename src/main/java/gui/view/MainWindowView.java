@@ -4,10 +4,7 @@ import gui.controller.ProcessController;
 import gui.mediator.CreateMediator;
 import gui.mediator.MenuBarMediator;
 import gui.model.*;
-import gui.model.date.Barrier;
-import gui.model.date.Condition;
-import gui.model.date.Mutex;
-import gui.model.date.Semaphore;
+import gui.model.date.*;
 import gui.style.Style;
 import gui.view.ganttchart.GantChartInitialize;
 import gui.view.menubar.MenuBarView;
@@ -33,7 +30,7 @@ public class MainWindowView {
     protected static AboutWindowView aboutWindowView;
 
     //tabelle
-    protected static StatusTable tableView;
+    public static StatusTable tableView;
     public static MutexTable mutexTable;
     public static SemaphoreTable semaphoreTable;
     public static LockTableView lockTableView;
@@ -41,6 +38,7 @@ public class MainWindowView {
     public static ConditionTable conditionTable;
 
     //liste riferite alle tabelle
+    private static ObservableList<Status> statusList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Mutex> mutexList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Semaphore> semaphoreList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Barrier> barrierList = FXCollections.observableArrayList(new ArrayList<>());
@@ -69,7 +67,8 @@ public class MainWindowView {
         gantChartInitialize = GantChartInitialize.create();
         gantChartInitialize.setBthreadList(bthreadList.get());
         aboutWindowView = new AboutWindowView();
-        tableView = new StatusTable();
+        //table
+        tableView = StatusTable.create(statusList);
         mutexTable = MutexTable.create(mutexList);
         semaphoreTable = SemaphoreTable.create(semaphoreList);
         lockTableView = new LockTableView();
@@ -78,7 +77,7 @@ public class MainWindowView {
 
 
         //Mediators
-        CreateMediator createMediator = CreateMediator.create(mutexList, semaphoreList, barrierList, conditionList);
+        CreateMediator createMediator = CreateMediator.create(statusList, mutexList, semaphoreList, barrierList, conditionList);
 
         MenuBarMediator menuBarMediator = MenuBarMediator.create();
         menuBarMediator.setStartProcessMenuItem(menubar.getStartProcessItemMenu());

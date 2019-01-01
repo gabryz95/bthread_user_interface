@@ -48,5 +48,7 @@ public class Parser extends Observable {
             this.setChanged();
             notifyObservers(MyDataEventFactory.create("ConditionEvent", line));
         }
+        this.setChanged();
+        notifyObservers(MyDataEventFactory.create("StatusEvent", line));
     }
 }

@@ -1,15 +1,9 @@
 package gui.mediator;
 
 
-import gui.controller.BarrierListController;
-import gui.controller.ConditionListController;
-import gui.controller.MutexListController;
-import gui.controller.SemaphoreListController;
+import gui.controller.*;
 import gui.event.*;
-import gui.model.date.Barrier;
-import gui.model.date.Condition;
-import gui.model.date.Mutex;
-import gui.model.date.Semaphore;
+import gui.model.date.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.Before;
@@ -27,6 +21,8 @@ import static org.junit.Assert.*;
 public class CreateMediatorTest {
 
     @Mock
+    private StatusListController statusListController;
+    @Mock
     private MutexListController mutexListController;
     @Mock
     private SemaphoreListController semaphoreListController;
@@ -35,6 +31,7 @@ public class CreateMediatorTest {
     @Mock
     private ConditionListController conditionListController;
 
+    private ObservableList<Status> statusObservableList;
     private ObservableList<Mutex> mutexObservableList;
     private ObservableList<Semaphore> semaphoreObservableList;
     private ObservableList<Barrier> barrierObservableList;
@@ -43,40 +40,48 @@ public class CreateMediatorTest {
 
     @Before
     public void setUp() {
+        statusListController = Mockito.mock(StatusListController.class);
         mutexListController = Mockito.mock(MutexListController.class);
         semaphoreListController = Mockito.mock(SemaphoreListController.class);
         barrierListController = Mockito.mock(BarrierListController.class);
         conditionListController = Mockito.mock(ConditionListController.class);
+
+        statusObservableList = FXCollections.observableArrayList(new ArrayList<>());
         mutexObservableList = FXCollections.observableArrayList(new ArrayList<>());
         semaphoreObservableList = FXCollections.observableArrayList(new ArrayList<>());
         barrierObservableList = FXCollections.observableArrayList(new ArrayList<>());
         conditionObservableList = FXCollections.observableArrayList(new ArrayList<>());
-        createMediator = CreateMediator.create(mutexObservableList, semaphoreObservableList, barrierObservableList, conditionObservableList);
 
+        createMediator = CreateMediator.create(statusObservableList, mutexObservableList, semaphoreObservableList, barrierObservableList, conditionObservableList);
     }
 
     @Test
     public void create01() {
-        assertNull(CreateMediator.create(null, semaphoreObservableList, barrierObservableList, conditionObservableList));
+        assertNull(CreateMediator.create(null, mutexObservableList, semaphoreObservableList, barrierObservableList, conditionObservableList));
     }
 
     @Test
     public void create02() {
-        assertNull(CreateMediator.create(mutexObservableList, null, barrierObservableList, conditionObservableList));
+        assertNull(CreateMediator.create(statusObservableList, null, semaphoreObservableList, barrierObservableList, conditionObservableList));
     }
 
     @Test
     public void create03() {
-        assertNull(CreateMediator.create(mutexObservableList, semaphoreObservableList, null, conditionObservableList));
+        assertNull(CreateMediator.create(statusObservableList, mutexObservableList, null, barrierObservableList, conditionObservableList));
     }
 
     @Test
     public void create04() {
-        assertNull(CreateMediator.create(mutexObservableList, semaphoreObservableList, barrierObservableList, null));
+        assertNull(CreateMediator.create(statusObservableList, mutexObservableList, semaphoreObservableList, null, conditionObservableList));
     }
 
     @Test
     public void create05() {
+        assertNull(CreateMediator.create(statusObservableList, mutexObservableList, semaphoreObservableList, barrierObservableList, null));
+    }
+
+    @Test
+    public void create06() {
         assertNotNull(createMediator);
     }
 

@@ -13,6 +13,10 @@ public abstract class MyData {
         return status.get();
     }
 
+    public void setStatus(String status) {
+        this.status.set(status);
+    }
+
     public int getThreadId() {
         return threadId.get();
     }

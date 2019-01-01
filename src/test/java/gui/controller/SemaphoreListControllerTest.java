@@ -95,6 +95,5 @@ public class SemaphoreListControllerTest {
         semaphoreListController = SemaphoreListController.create(semaphoreObservableList);
         semaphoreListController.sempostFunction(Semaphore.create("(SEMPOST) 2 0x1077dc0d0 0"));
         assertEquals(1, semaphoreListController.semaphoreList.get(0).getCounter());
-
     }
 }
