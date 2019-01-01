@@ -19,17 +19,17 @@ public class MutexListControllerTest {
     @Before
     public void setUp() {
         mutexObservableList = FXCollections.observableArrayList(new ArrayList<>());
+        mutexListController = MutexListController.create(mutexObservableList);
     }
 
     @Test
     public void create01() {
-        mutexListController = MutexListController.create(null);
-        assertNull(mutexListController);
+        assertNull(MutexListController.create(null));
     }
 
     @Test
     public void create02() {
-        mutexListController = MutexListController.create(mutexObservableList);
+
         assertNotNull(mutexListController);
     }
 

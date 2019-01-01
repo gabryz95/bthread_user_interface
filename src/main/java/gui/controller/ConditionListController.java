@@ -30,7 +30,7 @@ public class ConditionListController extends ManageQueue {
         }
     }
 
-    private void condblockedFunction(Condition condition) {
+    protected void condblockedFunction(Condition condition) {
         for (Condition element : conditionList) {
             if (element.getAddress().equalsIgnoreCase(condition.getAddress())) {
                 element.setQueue(addElement(element.getQueue(), condition.getThreadId()));
@@ -42,7 +42,7 @@ public class ConditionListController extends ManageQueue {
         conditionList.add(condition);
     }
 
-    private void condbroadcastFunction(Condition condition) {
+    protected void condbroadcastFunction(Condition condition) {
         for (Condition element : conditionList) {
             if (element.getAddress().equalsIgnoreCase(condition.getAddress())) {
                 element.setQueue(null);
@@ -51,7 +51,7 @@ public class ConditionListController extends ManageQueue {
         }
     }
 
-    private void condsignalFunction(Condition condition) {
+    protected void condsignalFunction(Condition condition) {
         for (Condition element : conditionList) {
             if (element.getAddress().equalsIgnoreCase(condition.getAddress())) {
                 element.setQueue(calculateNewQueue(element.getQueue()));

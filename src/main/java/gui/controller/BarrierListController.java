@@ -8,7 +8,7 @@ import java.util.List;
 //TODO: possibilità di utilizzo dello strategi pattern/state
 public class BarrierListController extends ManageQueue {
 
-    private List<Barrier> barrierList;
+    protected List<Barrier> barrierList;
 
     public static BarrierListController create(List<Barrier> barrierList) {
         if (barrierList == null)
