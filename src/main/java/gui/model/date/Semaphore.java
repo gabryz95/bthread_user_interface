@@ -43,10 +43,6 @@ public class Semaphore extends MyData {
         return semaphore;
     }
 
-    public String getAddress() {
-        return address.get();
-    }
-
     public String getQueue() {
         return queue.get();
     }
@@ -61,9 +57,5 @@ public class Semaphore extends MyData {
 
     public void setCounter(int counter) {
         this.counter.set(counter);
-    }
-
-    public String getStatus() {
-        return status.get();
     }
 }

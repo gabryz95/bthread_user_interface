@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 public class StyleTest {
 
-    private final String path = "file:///" + (new File("src/main/resources/Style.css")).getAbsolutePath().replace("\\", "/");
+    private final String path = (new File("src/main/resources/Style.css")).getAbsolutePath().replace("\\", "/");
 
 
     @Test

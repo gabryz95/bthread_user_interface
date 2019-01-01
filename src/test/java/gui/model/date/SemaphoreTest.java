@@ -65,6 +65,6 @@ public class SemaphoreTest {
 
     @Test
     public void getStatus() {
-        assertEquals(semaphore.status, semaphore.getStatus());
+        assertEquals(semaphore.status.get(), semaphore.getStatus());
     }
 }

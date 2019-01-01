@@ -52,6 +52,6 @@ public class MutexTest {
     @Test
     public void getStatus() {
         Mutex mutex = Mutex.create("(MUTACQUIRE) 2 0x9346756");
-        assertEquals(mutex.status, mutex.getStatus());
+        assertEquals(mutex.status.get(), mutex.getStatus());
     }
 }
