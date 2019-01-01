@@ -11,23 +11,18 @@ import gui.model.date.Semaphore;
 import gui.style.Style;
 import gui.view.ganttchart.GantChartInitialize;
 import gui.view.menubar.MenuBarView;
-import gui.view.table.LockTableView;
-import gui.view.table.MutexTable;
-import gui.view.table.SemaphoreTable;
-import gui.view.table.StatusTable;
+import gui.view.table.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
 
 public class MainWindowView {
 
@@ -42,6 +37,8 @@ public class MainWindowView {
     public static MutexTable mutexTable;
     public static SemaphoreTable semaphoreTable;
     public static LockTableView lockTableView;
+    public static BarrierTable barrierTable;
+    public static ConditionTable conditionTable;
 
     //liste riferite alle tabelle
     private static ObservableList<Mutex> mutexList = FXCollections.observableArrayList(new ArrayList<>());
@@ -76,6 +73,8 @@ public class MainWindowView {
         mutexTable = MutexTable.create(mutexList);
         semaphoreTable = SemaphoreTable.create(semaphoreList);
         lockTableView = new LockTableView();
+        barrierTable = BarrierTable.create(barrierList);
+        conditionTable = ConditionTable.create(conditionList);
 
 
         //Mediators
@@ -120,10 +119,10 @@ public class MainWindowView {
         ganttTab.setContent(gantChartInitialize.getChart());
         stateTab.setContent(tableView.getTableView());
         lockTab.setContent(lockTableView.getTableView());
-        barrierTab.setContent(new AnchorPane());    //TODO: change with Barrier Table
+        barrierTab.setContent(barrierTable.getTableView());
         mutexTab.setContent(mutexTable.getTableView());
         semaphoreTab.setContent(semaphoreTable.getTableView());
-        conditionTab.setContent(new AnchorPane());
+        conditionTab.setContent(conditionTable.getTableView());
 
         tabContentPane.getTabs().addAll(ganttTab, stateTab, barrierTab, lockTab, mutexTab, semaphoreTab, conditionTab);
         tabContentPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -141,10 +140,8 @@ public class MainWindowView {
 
         //add observer to observerList
         observerList.add(console);
-        observerList.add(tableView);
         observerList.add(menuBarMediator);
         observerList.add(aboutWindowView);
-
     }
 
     private MainWindowView() {

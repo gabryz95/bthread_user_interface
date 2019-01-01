@@ -49,10 +49,6 @@ public class Barrier extends MyData {
         return size.get();
     }
 
-    public SimpleIntegerProperty sizeProperty() {
-        return size;
-    }
-
     public void setSize(int size) {
         this.size.set(size);
     }
@@ -61,20 +57,12 @@ public class Barrier extends MyData {
         return counter.get();
     }
 
-    public SimpleIntegerProperty counterProperty() {
-        return counter;
-    }
-
     public void setCounter(int counter) {
         this.counter.set(counter);
     }
 
     public String getQueue() {
         return queue.get();
-    }
-
-    public SimpleStringProperty queueProperty() {
-        return queue;
     }
 
     public void setQueue(String queue) {

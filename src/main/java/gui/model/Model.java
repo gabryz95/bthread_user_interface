@@ -58,7 +58,7 @@ public class Model extends Observable implements ProcessManager {
             tableThread.start();
             ganttThread = new Thread(MainWindowView.getInstance().gantChartInitialize);
             ganttThread.setDaemon(true);
-            ganttThread.start();
+            //ganttThread.start();
         } else {
             throw new IOException("start process is not null");
         }

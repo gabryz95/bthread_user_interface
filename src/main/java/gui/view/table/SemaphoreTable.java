@@ -21,7 +21,7 @@ public class SemaphoreTable {
         semaphoreTable.tableView = new TableView<>();
         semaphoreTable.tableView.setItems(list);
 
-        TableColumn semaphoreColumn = new TableColumn("MUTEX");
+        TableColumn semaphoreColumn = new TableColumn("SEMAPHORE");
         TableColumn counterColumn = new TableColumn("COUNTER");
         TableColumn queueColumn = new TableColumn("QUEUE");
 

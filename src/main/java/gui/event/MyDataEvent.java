@@ -7,5 +7,4 @@ import lombok.Getter;
 public abstract class MyDataEvent {
 
     protected MyData data;
-
 }
