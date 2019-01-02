@@ -2,7 +2,6 @@ package gui.model;
 
 import gui.event.NewLineReadEvent;
 import gui.view.MainWindowView;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -58,8 +57,6 @@ public class OutputProcessingThread extends Observable implements Runnable {
                             this.setChanged();
                             notifyObservers(new NewLineReadEvent(line + "\n"));
                         }
-                        //LockTable code...
-                        connectToLockTable(bthread);
 
                         if (bthread.getStatus().equalsIgnoreCase("CREATE")) {
                             bthreadList.add(bthread);
@@ -83,15 +80,5 @@ public class OutputProcessingThread extends Observable implements Runnable {
 
     void setIsMonitoring(boolean flag) {
         isMonitoring.set(flag);
-    }
-
-    private boolean connectToLockTable(@NotNull Bthread bthread) {
-        if (bthread.getStatus().equals("CREATE")) {
-            MainWindowView.lockTableView.addRow(new Lock(Integer.toString(bthread.getPid()), ""));
-            return true;
-        } else if (bthread.getStatus().equals("SCHEDULING")) {
-            return MainWindowView.lockTableView.setThreadStatusLock(bthread.getPid());
-        }
-        return false;
     }
 }

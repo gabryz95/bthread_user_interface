@@ -1,7 +1,6 @@
 package gui.command;
 
 import gui.event.StopEvent;
-import gui.interfaces.CommandAbs;
 import gui.singleton.MainProcess;
 
 public class StopProcessCommand extends CommandAbs {

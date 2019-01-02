@@ -1,7 +1,6 @@
 package gui.model;
 
-import gui.model.date.Mutex;
-import gui.model.date.Semaphore;
+import gui.model.date.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.Before;
@@ -22,52 +21,64 @@ public class ModelTest {
     @Mock
     private Parser parser;
 
+    private ObservableList<Status> statusObservableList;
+    private ObservableList<Lock> lockObservableList;
     private ObservableList<Mutex> mutexObservableList;
     private ObservableList<Semaphore> semaphoreObservableList;
+    private ObservableList<Barrier> barrierObservableList;
+    private ObservableList<Condition> conditionObservableList;
 
     @Before
     public void setUp() {
         model = Mockito.mock(Model.class);
         parser = Mockito.mock(Parser.class);
+        statusObservableList = FXCollections.observableArrayList(new ArrayList<>());
+        lockObservableList = FXCollections.observableArrayList(new ArrayList<>());
         mutexObservableList = FXCollections.observableArrayList(new ArrayList<>());
         semaphoreObservableList = FXCollections.observableArrayList(new ArrayList<>());
+        barrierObservableList = FXCollections.observableArrayList(new ArrayList<>());
+        conditionObservableList = FXCollections.observableArrayList(new ArrayList<>());
     }
 
     @Test
     public void create01() {
-        assertNull(Model.create(null, mutexObservableList, semaphoreObservableList));
+        assertNull(Model.create(null, statusObservableList, lockObservableList, mutexObservableList, semaphoreObservableList, barrierObservableList, conditionObservableList));
     }
 
     @Test
     public void create02() {
-        assertNull(Model.create(parser, null, semaphoreObservableList));
+        assertNull(Model.create(parser, null, lockObservableList, mutexObservableList, semaphoreObservableList, barrierObservableList, conditionObservableList));
     }
 
     @Test
     public void create03() {
-        assertNull(Model.create(parser, mutexObservableList, null));
+        assertNull(Model.create(parser, statusObservableList, null, mutexObservableList, semaphoreObservableList, barrierObservableList, conditionObservableList));
     }
 
     @Test
     public void create04() {
-        assertNotNull(Model.create(parser, mutexObservableList, semaphoreObservableList));
+        assertNull(Model.create(parser, statusObservableList, lockObservableList, null, semaphoreObservableList, barrierObservableList, conditionObservableList));
     }
 
-//    @Test(expected = NullPointerException.class)
-//    public void startProcess01() {
-//        model.startProcess(null);
-//    }
-//
-//    @Test(expected = NullPointerException.class)
-//    public void startProcess02() {
-//        model.startProcess(" ");
-//    }
-//
-//    @Test
-//    public void startProcess03() {
-//        model.startProcess("/Users/gabrielezorloni/Google Drive/Supsi/Sistemi Operativi2/Laboratorio/Archive/philosophers");
-//        verify(processManager).startProcess("/Users/gabrielezorloni/Google Drive/Supsi/Sistemi Operativi2/Laboratorio/Archive/philosophers");
-//    }
+    @Test
+    public void create05() {
+        assertNull(Model.create(parser, statusObservableList, lockObservableList, mutexObservableList, null, barrierObservableList, conditionObservableList));
+    }
+
+    @Test
+    public void create06() {
+        assertNull(Model.create(parser, statusObservableList, lockObservableList, mutexObservableList, semaphoreObservableList, null, conditionObservableList));
+    }
+
+    @Test
+    public void create07() {
+        assertNull(Model.create(parser, statusObservableList, lockObservableList, mutexObservableList, semaphoreObservableList, barrierObservableList, null));
+    }
+
+    @Test
+    public void create08() {
+        assertNotNull(Model.create(parser, statusObservableList, lockObservableList, mutexObservableList, semaphoreObservableList, barrierObservableList, conditionObservableList));
+    }
 
     @Test
     public void startProcessTest() throws IOException {

@@ -5,10 +5,10 @@ import gui.event.ChooseFileEvent;
 import gui.event.ExitEvent;
 import gui.event.MonitoringStartedEvent;
 import gui.interfaces.ProcessManager;
-import gui.model.date.Mutex;
-import gui.model.date.Semaphore;
+import gui.model.date.*;
 import gui.singleton.MainProcess;
 import gui.view.MainWindowView;
+import gui.view.ganttchart.GantChartInitialize;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
@@ -21,25 +21,42 @@ public class Model extends Observable implements ProcessManager {
     protected Thread tableThread;
     protected Thread ganttThread;
     protected Parser parser;
+    protected ObservableList<Status> statusList;
+    private ObservableList<Lock> lockList;
     protected ObservableList<Mutex> mutexList;
     protected ObservableList<Semaphore> semaphoreList;
+    protected ObservableList<Barrier> barrierList;
+    protected ObservableList<Condition> conditionList;
 
 
     //singleton
-    public static Model create(Parser parser, ObservableList<Mutex> mutexList, ObservableList<Semaphore> semaphoreList) {
+    public static Model create(Parser parser, ObservableList<Status> statusList, ObservableList<Lock> lockList, ObservableList<Mutex> mutexList, ObservableList<Semaphore> semaphoreList,
+                               ObservableList<Barrier> barrierList, ObservableList<Condition> conditionList) {
 
         if (parser == null)
+            return null;
+        if (statusList == null)
+            return null;
+        if (lockList == null)
             return null;
         if (mutexList == null)
             return null;
         if (semaphoreList == null)
             return null;
+        if (barrierList == null)
+            return null;
+        if (conditionList == null)
+            return null;
 
         if (model == null) {
             model = new Model();
             model.parser = parser;
+            model.statusList = statusList;
+            model.lockList = lockList;
             model.mutexList = mutexList;
             model.semaphoreList = semaphoreList;
+            model.barrierList = barrierList;
+            model.conditionList = conditionList;
         }
         return model;
     }
@@ -49,8 +66,7 @@ public class Model extends Observable implements ProcessManager {
     public void startProcess(Process initProcess) throws IOException {
         if (MainProcess.getMainProcess().getCurrentProcess() == null) {
             MainProcess.getMainProcess().setCurrentProcess(initProcess);
-            mutexList.clear();
-            semaphoreList.clear();
+            clearList();
             this.setChanged();
             opt = OutputProcessingThread.create(initProcess, MainWindowView.getObserverList(), parser);
             tableThread = new Thread(opt);
@@ -58,7 +74,7 @@ public class Model extends Observable implements ProcessManager {
             tableThread.start();
             ganttThread = new Thread(MainWindowView.getInstance().gantChartInitialize);
             ganttThread.setDaemon(true);
-            //ganttThread.start();
+            ganttThread.start();
         } else {
             throw new IOException("start process is not null");
         }
@@ -121,5 +137,14 @@ public class Model extends Observable implements ProcessManager {
     public void aboutWindow() {
         this.setChanged();
         this.notifyObservers(new AboutEvent());
+    }
+
+    public void clearList() {
+        statusList.clear();
+        lockList.clear();
+        mutexList.clear();
+        semaphoreList.clear();
+        barrierList.clear();
+        conditionList.clear();
     }
 }

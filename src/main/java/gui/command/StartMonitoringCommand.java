@@ -1,6 +1,5 @@
 package gui.command;
 
-import gui.interfaces.CommandAbs;
 import gui.singleton.MainProcess;
 
 public class StartMonitoringCommand extends CommandAbs{

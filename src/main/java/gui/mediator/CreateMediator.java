@@ -1,7 +1,7 @@
 package gui.mediator;
 
-import gui.controller.*;
-import gui.event.*;
+import gui.controller.tableListController.*;
+import gui.event.myDateEvent.*;
 import gui.model.date.*;
 import javafx.collections.ObservableList;
 import lombok.Setter;
@@ -13,15 +13,18 @@ import java.util.Observer;
 public class CreateMediator implements Observer {
 
     protected StatusListController statusListController;
+    protected LockListController lockListController;
     protected MutexListController mutexListController;
     protected SemaphoreListController semaphoreListController;
     protected BarrierListController barrierListController;
     protected ConditionListController conditionListController;
 
-    public static CreateMediator create(ObservableList<Status> statusList, ObservableList<Mutex> mutexList, ObservableList<Semaphore> semaphoreList,
+    public static CreateMediator create(ObservableList<Status> statusList, ObservableList<Lock> lockList, ObservableList<Mutex> mutexList, ObservableList<Semaphore> semaphoreList,
                                         ObservableList<Barrier> barrierList, ObservableList<Condition> conditionList) {
 
         if (statusList == null)
+            return null;
+        if (lockList == null)
             return null;
         if (mutexList == null)
             return null;
@@ -34,6 +37,7 @@ public class CreateMediator implements Observer {
 
         CreateMediator createMediator = new CreateMediator();
         createMediator.statusListController = StatusListController.create(statusList);
+        createMediator.lockListController = LockListController.create(lockList);
         createMediator.mutexListController = MutexListController.create(mutexList);
         createMediator.semaphoreListController = SemaphoreListController.create(semaphoreList);
         createMediator.barrierListController = BarrierListController.create(barrierList);
@@ -53,6 +57,8 @@ public class CreateMediator implements Observer {
             conditionListController.controll((Condition) ((ConditionEvent) event).getData());
         } else if (event instanceof StatusEvent) {
             statusListController.controll((Status) ((StatusEvent) event).getData());
+        } else if (event instanceof LockEvent) {
+            lockListController.controll((Lock) ((LockEvent) event).getData());
         }
     }
 }

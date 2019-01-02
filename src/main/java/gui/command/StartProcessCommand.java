@@ -1,7 +1,6 @@
 package gui.command;
 
 import gui.event.StartEvent;
-import gui.interfaces.CommandAbs;
 
 import java.io.IOException;
 

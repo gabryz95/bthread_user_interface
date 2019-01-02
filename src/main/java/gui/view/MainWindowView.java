@@ -33,12 +33,13 @@ public class MainWindowView {
     public static StatusTable tableView;
     public static MutexTable mutexTable;
     public static SemaphoreTable semaphoreTable;
-    public static LockTableView lockTableView;
+    public static LockTable lockTable;
     public static BarrierTable barrierTable;
     public static ConditionTable conditionTable;
 
     //liste riferite alle tabelle
     private static ObservableList<Status> statusList = FXCollections.observableArrayList(new ArrayList<>());
+    private static ObservableList<Lock> lockList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Mutex> mutexList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Semaphore> semaphoreList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Barrier> barrierList = FXCollections.observableArrayList(new ArrayList<>());
@@ -56,7 +57,7 @@ public class MainWindowView {
         root.getStyleClass().add("main");
         //Model instance
         parser = new Parser();
-        Model model = Model.create(parser, mutexList, semaphoreList);
+        Model model = Model.create(parser, statusList, lockList, mutexList, semaphoreList, barrierList, conditionList);
         //Controllers
         ProcessController controller = ProcessController.create(model);
 
@@ -71,13 +72,14 @@ public class MainWindowView {
         tableView = StatusTable.create(statusList);
         mutexTable = MutexTable.create(mutexList);
         semaphoreTable = SemaphoreTable.create(semaphoreList);
-        lockTableView = new LockTableView();
+        lockTable = LockTable.create(lockList);
         barrierTable = BarrierTable.create(barrierList);
         conditionTable = ConditionTable.create(conditionList);
 
 
         //Mediators
-        CreateMediator createMediator = CreateMediator.create(statusList, mutexList, semaphoreList, barrierList, conditionList);
+        CreateMediator createMediator = CreateMediator.create(statusList, lockList, mutexList, semaphoreList,
+                barrierList, conditionList);
 
         MenuBarMediator menuBarMediator = MenuBarMediator.create();
         menuBarMediator.setStartProcessMenuItem(menubar.getStartProcessItemMenu());
@@ -117,7 +119,7 @@ public class MainWindowView {
         //set tabs content
         ganttTab.setContent(gantChartInitialize.getChart());
         stateTab.setContent(tableView.getTableView());
-        lockTab.setContent(lockTableView.getTableView());
+        lockTab.setContent(lockTable.getTableView());
         barrierTab.setContent(barrierTable.getTableView());
         mutexTab.setContent(mutexTable.getTableView());
         semaphoreTab.setContent(semaphoreTable.getTableView());

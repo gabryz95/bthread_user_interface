@@ -1,6 +1,6 @@
 package gui.model;
 
-import gui.event.MyDataEventFactory;
+import gui.event.myDateEvent.MyDataEventFactory;
 
 import java.util.Observable;
 
@@ -47,6 +47,9 @@ public class Parser extends Observable {
         } else if (discriminated.equalsIgnoreCase("CON")) {
             this.setChanged();
             notifyObservers(MyDataEventFactory.create("ConditionEvent", line));
+        } else if (discriminated.equalsIgnoreCase("SCH")) {
+            this.setChanged();
+            notifyObservers(MyDataEventFactory.create("LockEvent", line));
         }
         this.setChanged();
         notifyObservers(MyDataEventFactory.create("StatusEvent", line));

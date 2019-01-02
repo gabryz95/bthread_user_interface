@@ -1,7 +1,7 @@
 package gui.view.menubar;
 
 import gui.controller.ProcessController;
-import gui.interfaces.CommandAbs;
+import gui.command.CommandAbs;
 import gui.model.ObserverList;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
