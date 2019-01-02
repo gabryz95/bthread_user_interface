@@ -23,13 +23,7 @@ public class LockListController {
         if (lock != null) {
             for (Lock element : lockList) {
                 if (element.getThreadId() == lock.getThreadId()) {
-                    for (Lock element2 : lockList) {
-                        try {
-                            if (element2.getStatus().equalsIgnoreCase("LOCK"))
-                                element2.setStatus(null);
-                        } catch (NullPointerException e) {
-                        }
-                    }
+                    removeLockStatuFromElement();
                     element.setStatus("LOCK");
                     reloadData();
                     return;
@@ -37,6 +31,17 @@ public class LockListController {
             }
             lock.setStatus("LOCK");
             addElementToLockList(lock);
+            removeLockStatuFromElement();
+        }
+    }
+
+    protected void removeLockStatuFromElement() {
+        for (Lock element2 : lockList) {
+            try {
+                if (element2.getStatus().equalsIgnoreCase("LOCK"))
+                    element2.setStatus(null);
+            } catch (NullPointerException e) {
+            }
         }
     }
 
