@@ -1,6 +1,7 @@
 package gui.view;
 
 import gui.event.*;
+import gui.model.AboutWindow;
 import gui.style.Style;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
@@ -9,6 +10,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class ConsoleView implements Observer {
+
     protected TextArea console;
 
     public static ConsoleView create() {
@@ -47,8 +49,8 @@ public class ConsoleView implements Observer {
             console.appendText(((RestartEvent) event).getString() + "\n");
         } else if (event instanceof NewLineReadEvent) {
             Platform.runLater(() -> console.appendText(((NewLineReadEvent) event).getLine()));
-        } else if (event instanceof NotFileChoseEvent) {
-            console.appendText(((NotFileChoseEvent) event).getString() + "\n");
+        } else if (event instanceof AboutEvent) {
+            console.appendText(((AboutEvent) event).getString() + "\n");
         }
     }
 }

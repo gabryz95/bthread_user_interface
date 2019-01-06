@@ -1,6 +1,8 @@
 package gui.command;
 
+import gui.controller.AboutWindowController;
 import gui.controller.ProcessController;
+import gui.view.JavaFXInitTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -12,19 +14,18 @@ public class AboutCommandTest {
     private AboutCommand aboutCommand;
 
     @Mock
-    private ProcessController receiver;
-    private String filename;
+    private AboutWindowController receiver;
 
     @Before
     public void BeforeEachTestMethod() {
         aboutCommand = new AboutCommand();
-        receiver = Mockito.mock(ProcessController.class);
+        receiver = Mockito.mock(AboutWindowController.class);
     }
 
     @Test
     public void execute() {
-        //aboutCommand.create(receiver, filename);
-        //aboutCommand.execute();
-        //Mockito.verify(receiver, Mockito.times(1)).aboutWindow();
+        aboutCommand.createAboutCommand(receiver);
+        aboutCommand.execute();
+        Mockito.verify(receiver, Mockito.times(1)).aboutWindow();
     }
 }

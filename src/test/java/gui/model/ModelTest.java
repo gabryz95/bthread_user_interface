@@ -82,14 +82,14 @@ public class ModelTest {
 
     @Test
     public void startProcessTest() throws IOException {
-        model.startProcess(any(Process.class));
-        Mockito.verify(model, Mockito.times(1)).startProcess(any(Process.class));
+        model.startProcess(any(Process.class), any(String.class));
+        Mockito.verify(model, Mockito.times(1)).startProcess(any(Process.class), any(String.class));
     }
 
     @Test
     public void stopProcess() {
-        model.stopProcess(any(Process.class));
-        Mockito.verify(model, Mockito.times(1)).stopProcess(any(Process.class));
+        model.stopProcess(any(Process.class), any(String.class));
+        Mockito.verify(model, Mockito.times(1)).stopProcess(any(Process.class), any(String.class));
     }
 
     @Test

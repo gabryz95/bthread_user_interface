@@ -31,7 +31,7 @@ public class RestartProcessCommandTest {
     @Test
     public void execute() {
         MainProcess mainProcess = Mockito.mock(MainProcess.class);
-        restartProcessCommand.create(receiver, filename);
+        restartProcessCommand.createCommandProcess(receiver, filename);
         restartProcessCommand.execute();
         //Mockito.verify(receiver, Mockito.times(1)).restartProcess(any(Process.class), restartProcessCommand.initProcess(filename));
 
@@ -39,7 +39,7 @@ public class RestartProcessCommandTest {
 
     @Test
     public void initProces01() {
-        restartProcessCommand.create(receiver, filename);
+        restartProcessCommand.createCommandProcess(receiver, filename);
         assertNotNull(restartProcessCommand.initProcess(filename));
     }
 }

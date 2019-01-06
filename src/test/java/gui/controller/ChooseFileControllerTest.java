@@ -1,36 +1,67 @@
 package gui.controller;
 
-import javafx.stage.FileChooser;
+import gui.model.ChooseFile;
 import javafx.stage.Stage;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.File;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Matchers.any;
 
 public class ChooseFileControllerTest {
 
+    private ChooseFileController chooseFileController;
+
+    @Mock
     private Stage stage;
-    private FileChooser fileChooser;
-    private ProcessController receiver;
+    @Mock
+    private ChooseFile chooseFile;
 
-
-    @Test(expected = IllegalStateException.class)
-    public void execute01() {
-        this.fileChooser = new FileChooser();
-        this.stage = null;
-        File file = fileChooser.showOpenDialog(stage);
-        assertNull(file);
+    @BeforeEach
+    public void setUp() {
+        stage = Mockito.mock(Stage.class);
+        chooseFile = Mockito.mock(ChooseFile.class);
+        chooseFileController = ChooseFileController.create(stage, chooseFile);
     }
 
     @Test
-    public void execute02() {
-        this.stage = Mockito.mock(Stage.class);
-        this.fileChooser = new FileChooser();
-        this.receiver = Mockito.mock(ProcessController.class);
+    public void create01() {
+        assertNull(ChooseFileController.create(null, chooseFile));
     }
 
+    @Test
+    public void create02() {
+        assertNull(ChooseFileController.create(stage, null));
+    }
 
+    @Test
+    public void create03() {
+        assertNotNull(chooseFileController);
+    }
 
+    @Test
+    public void isValid() {
+        File file = new File("/Users/gabrielezorloni/Desktop/Archive/philosophers");
+        assertEquals(true, chooseFileController.isValid(file));
+    }
+
+    @Test
+    public void chooseFileProcess() {
+        chooseFileController.chooseFileProcess();
+        Mockito.verify(chooseFile, Mockito.times(1)).chooseFileProcess();
+    }
+
+    @Test
+    public void getStage() {
+        assertEquals(chooseFileController.stage, chooseFileController.getStage());
+    }
+
+    @Test
+    public void getFileChooser() {
+        assertEquals(chooseFileController.fileChooser, chooseFileController.getFileChooser());
+    }
 }

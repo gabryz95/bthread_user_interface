@@ -1,5 +1,6 @@
 package gui.event;
 
+import gui.style.Style;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -8,7 +9,7 @@ public class AboutEventTest {
 
     @Test
     public void getString() {
-        Assert.assertEquals("About window\n", aboutEvent.getString());
+        Assert.assertEquals( Style.getHour() + "[INFO] Open About Window\n", aboutEvent.getString());
     }
 
 }

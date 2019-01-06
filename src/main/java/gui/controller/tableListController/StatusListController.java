@@ -32,7 +32,7 @@ public class StatusListController {
             } else if (statusValue.equalsIgnoreCase("EXIT")) {
                 updateValueList(status, "EXIT");
             } else if (statusValue.equalsIgnoreCase("SCHEDULING")) {
-                updateValueList(status, "SCHEDULING");
+                updateValueList(status, "RUNNING");
             }
         }
     }

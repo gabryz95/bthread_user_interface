@@ -5,65 +5,60 @@ import gui.controller.AboutWindowController;
 import gui.controller.ChooseFileController;
 import gui.controller.ExitController;
 import gui.controller.ProcessController;
-import gui.view.MainWindowView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.stage.Stage;
 
 public class MenuBarView {
 
     public static String EXECUTABLE_FILE = null;
+
     protected MenuItemView startItemMenu;
     protected MenuItemView pauseItemMenu;
     protected MenuItemView stopItemMenu;
     protected MenuItemView startMonitoringItemMenu;
     protected MenuItemView restartItemMenu;
     protected MenuItemView aboutItemMenu;
+    protected MenuItemView chooseFileItemMenu;
     protected MenuBar menuBar;
 
-    public MenuBarView(final Stage stage, final ProcessController controller) {
-        menuBar = new MenuBar();
+    public static MenuBarView create(final ProcessController controller, final AboutWindowController aboutWindowController, final ExitController exitController,
+                                     final ChooseFileController chooseFileController) {
 
-        Menu fileMenu = new Menu("File");
+        MenuBarView menuBarView = new MenuBarView();
+        menuBarView.menuBar = new MenuBar();
+
+        //FILE MENU
         MenuItem newMenu = new MenuItem("New");
-        MenuItem chooseFileMenu = new MenuItem("Open File");
-        chooseFileMenu.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_ANY));
-        MenuItem exitMenu = new MenuItem("Exit");
-        exitMenu.setAccelerator(new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_ANY));
-        fileMenu.getItems().addAll(newMenu, chooseFileMenu, exitMenu);
+        menuBarView.chooseFileItemMenu = MenuItemView.create("Open File", new ChooseFileCommand(), chooseFileController);
+        MenuItemView exitItemMenu = MenuItemsViewFactory.instance().createMenuItem("Exit", new ExitCommand(), exitController);
 
-        Menu threadMenu = new Menu("Thread");
-        this.startItemMenu = new MenuItemView("Start", new StartProcessCommand(), controller, MainWindowView.getObserverList());
-        this.pauseItemMenu = new MenuItemView("Pause", new PauseProcessCommand(), controller, MainWindowView.getObserverList());
-        this.startMonitoringItemMenu = new MenuItemView("Monitoring", new StartMonitoringCommand(), controller, MainWindowView.getObserverList());
-        this.stopItemMenu = new MenuItemView("Stop", new StopProcessCommand(), controller, MainWindowView.getObserverList());
+        Menu fileMenu = MenuFactory.instance().createMenu("File");
+        fileMenu.getItems().addAll(newMenu, menuBarView.chooseFileItemMenu.getMenuItem(), exitItemMenu.getMenuItem());
+        //THREAD MENU
+
+        menuBarView.startItemMenu = MenuItemsViewFactory.instance().createMenuItem("Start", new StartProcessCommand(), controller);
+        menuBarView.pauseItemMenu = MenuItemsViewFactory.instance().createMenuItem("Pause", new PauseProcessCommand(), controller);
+        menuBarView.startMonitoringItemMenu = MenuItemsViewFactory.instance().createMenuItem("Monitoring", new StartMonitoringCommand(), controller);
+        menuBarView.stopItemMenu = MenuItemsViewFactory.instance().createMenuItem("Stop", new StopProcessCommand(), controller);
+        menuBarView.restartItemMenu = MenuItemsViewFactory.instance().createMenuItem("Restart", new RestartProcessCommand(), controller);
+
         SeparatorMenuItem separatorMenuItem1 = new SeparatorMenuItem();
-        this.restartItemMenu = new MenuItemView("Restart", new RestartProcessCommand(), controller, MainWindowView.getObserverList());
         SeparatorMenuItem separatorMenuItem2 = new SeparatorMenuItem();
-        threadMenu.getItems().addAll(startItemMenu.getMenuItem(), pauseItemMenu.getMenuItem(), stopItemMenu.getMenuItem(), separatorMenuItem1,
-                restartItemMenu.getMenuItem(), separatorMenuItem2, startMonitoringItemMenu.getMenuItem());
 
+        Menu threadMenu = MenuFactory.instance().createMenu("Thread");
+        threadMenu.getItems().addAll(menuBarView.startItemMenu.getMenuItem(), menuBarView.pauseItemMenu.getMenuItem(), menuBarView.stopItemMenu.getMenuItem(),
+                separatorMenuItem1, menuBarView.restartItemMenu.getMenuItem(), separatorMenuItem2, menuBarView.startMonitoringItemMenu.getMenuItem());
+
+        //HELP MENU
+        menuBarView.aboutItemMenu = MenuItemsViewFactory.instance().createMenuItem("About", new AboutCommand(), aboutWindowController);
         Menu helpMenu = new Menu("Help");
-        MenuItem aboutMenu = new MenuItem("About");
-        helpMenu.getItems().add(aboutMenu);
-        this.aboutItemMenu = new MenuItemView("About", new AboutCommand(), controller, MainWindowView.getObserverList());
-
-        menuBar.getMenus().addAll(fileMenu, threadMenu, helpMenu);
-
-        final AboutWindowController aboutWindowController = new AboutWindowController(stage, controller);
-        aboutMenu.setOnAction(e -> aboutWindowController.execute());
+        helpMenu.getItems().addAll(menuBarView.aboutItemMenu.getMenuItem());
 
 
-        final ExitController exitController = new ExitController(stage, controller);
-        exitMenu.setOnAction(e -> exitController.execute());
-
-        final ChooseFileController chooseFileController = new ChooseFileController(stage, controller);
-        chooseFileMenu.setOnAction(e -> chooseFileController.execute());
+        menuBarView.menuBar.getMenus().addAll(fileMenu, threadMenu, helpMenu);
+        return menuBarView;
     }
 
     public MenuBar getMenu() {
@@ -90,6 +85,11 @@ public class MenuBarView {
         return pauseItemMenu;
     }
 
-    public MenuItemView getWindowItemMenu() { return aboutItemMenu; }
+    public MenuItemView getWindowItemMenu() {
+        return aboutItemMenu;
+    }
 
+    public MenuItemView getChooseFileItemMenu() {
+        return chooseFileItemMenu;
+    }
 }

@@ -1,25 +1,22 @@
 package gui.command;
 
-import gui.event.RestartEvent;
 import gui.singleton.MainProcess;
 
 import java.io.IOException;
 
-public class RestartProcessCommand extends CommandAbs{
+public class RestartProcessCommand extends CommandAbs {
 
     @Override
     public void execute() {
         if (getProcess() != null) {
-            receiver.restartProcess(getProcess(), initProcess(filename));
+            receiver.restartProcess(getProcess(), initProcess(filename), filename);
         }
     }
 
-    protected Process initProcess(String fileName){
+    protected Process initProcess(String fileName) {
         Runtime rt = Runtime.getRuntime();
         try {
             Process process = rt.exec(fileName);
-            this.setChanged();
-            this.notifyObservers(new RestartEvent(fileName));
             return process;
         } catch (IOException e) {
             e.printStackTrace();
@@ -27,7 +24,7 @@ public class RestartProcessCommand extends CommandAbs{
         }
     }
 
-    protected Process getProcess(){
+    protected Process getProcess() {
         return MainProcess.getMainProcess().getCurrentProcess();
     }
 }

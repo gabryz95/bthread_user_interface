@@ -1,24 +1,34 @@
 package gui.controller;
 
+import gui.interfaces.Controller;
+import gui.interfaces.ExitManager;
 import javafx.stage.Stage;
 
-public class ExitController {
-    private Stage stage;
-    private ProcessController receiver;
+public class ExitController extends Controller implements ExitManager {
 
-    public ExitController(Stage stage, ProcessController model) {
-        this.stage = stage;
-        this.receiver = model;
-    }
+    protected Stage stage;
+    protected ExitManager receiver;
 
-    public void execute() {
-        if (stage == null)
-            return;
+    public static ExitController create(ExitManager receiver) {
 
         if (receiver == null)
-            return;
+            return null;
 
+        ExitController exitController = new ExitController();
+        exitController.receiver = receiver;
+        return exitController;
+    }
+
+    @Override
+    public void exitProcess() {
         receiver.exitProcess();
-        stage.close();
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 }

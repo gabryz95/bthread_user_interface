@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import static org.hamcrest.Matchers.any;
 import static org.mockito.Matchers.anyString;
 
 
@@ -26,9 +27,9 @@ public class PauseProcessCommandTest {
 
     @Test
     public void execute() {
-        pauseProcessCommand.create(receiver, filename);
+        pauseProcessCommand.createCommandProcess(receiver, filename);
         pauseProcessCommand.execute();
         //TODO: da sistemare
-        //Mockito.verify(receiver, Mockito.times(1)).pauseProcess(anyString());
+        // Mockito.verify(receiver, Mockito.times(1)).pauseProcess(any(Process.class), any(String.class));
     }
 }

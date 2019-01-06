@@ -39,26 +39,14 @@ public class ProcessControllerTest {
 
     @Test
     public void startProcess() throws IOException {
-        processController.startProcess(any(Process.class));
-        Mockito.verify(processManager, Mockito.times(1)).startProcess(any(Process.class));
+        processController.startProcess(any(Process.class), any(String.class));
+        Mockito.verify(processManager, Mockito.times(1)).startProcess(any(Process.class), any(String.class));
     }
 
     @Test
     public void stopProcess() {
-        processController.stopProcess(any(Process.class));
-        Mockito.verify(processManager, Mockito.times(1)).stopProcess(any(Process.class));
-    }
-
-    @Test
-    public void exitProcess() {
-        processController.exitProcess();
-        Mockito.verify(processManager, Mockito.times(1)).exitProcess();
-    }
-
-    @Test
-    public void chooseFileProcess() {
-        processController.chooseFileProcess();
-        Mockito.verify(processManager, Mockito.times(1)).chooseFileProcess();
+        processController.stopProcess(any(Process.class), any(String.class));
+        Mockito.verify(processManager, Mockito.times(1)).stopProcess(any(Process.class), any(String.class));
     }
 
     @Test
@@ -69,19 +57,13 @@ public class ProcessControllerTest {
 
     @Test
     public void restartProcess() {
-        processController.restartProcess(any(Process.class), any(Process.class));
-        Mockito.verify(processManager, Mockito.times(1)).restartProcess(any(Process.class), any(Process.class));
+        processController.restartProcess(any(Process.class), any(Process.class), any(String.class));
+        Mockito.verify(processManager, Mockito.times(1)).restartProcess(any(Process.class), any(Process.class), any(String.class));
     }
 
     @Test
     public void pauseProcess() {
-        processController.pauseProcess(any(Process.class));
-        Mockito.verify(processManager, Mockito.times(1)).pauseProcess(any(Process.class));
-    }
-
-    @Test
-    public void aboutWindow() {
-        processController.aboutWindow();
-        Mockito.verify(processManager, Mockito.times(1)).aboutWindow();
+        processController.pauseProcess(any(Process.class), any(String.class));
+        Mockito.verify(processManager, Mockito.times(1)).pauseProcess(any(Process.class), any(String.class));
     }
 }

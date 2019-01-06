@@ -1,23 +1,30 @@
 package gui.controller;
 
+import gui.interfaces.AboutWindowManager;
+import gui.interfaces.Controller;
 import javafx.stage.Stage;
 
-public class AboutWindowController {
-    private Stage stage;
-    private ProcessController receiver;
+public class AboutWindowController extends Controller implements AboutWindowManager {
 
-    public AboutWindowController(Stage stage, ProcessController receiver) {
-        this.stage = stage;
-        this.receiver = receiver;
-    }
+    protected Stage stage;
+    protected AboutWindowManager receiver;
 
-    public void execute() {
+    public static AboutWindowController create(Stage stage, AboutWindowManager receiver) {
         if (stage == null)
-            return;
+            return null;
 
         if (receiver == null)
-            return;
+            return null;
 
+        AboutWindowController aboutWindowController = new AboutWindowController();
+        aboutWindowController.stage = stage;
+        aboutWindowController.receiver = receiver;
+        return aboutWindowController;
+    }
+
+
+    @Override
+    public void aboutWindow() {
         receiver.aboutWindow();
     }
 }

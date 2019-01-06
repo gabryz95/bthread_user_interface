@@ -27,7 +27,7 @@ public class StartMonitoringCommandTest {
 
     @Test
     public void execute() {
-        startMonitoringCommand.create(receiver, filename);
+        startMonitoringCommand.createCommandProcess(receiver, filename);
         startMonitoringCommand.execute();
         Mockito.verify(receiver, Mockito.times(1)).startMonitoring(any(Process.class));
     }

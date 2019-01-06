@@ -1,10 +1,11 @@
 package gui.controller;
 
+import gui.interfaces.Controller;
 import gui.interfaces.ProcessManager;
 
 import java.io.IOException;
 
-public class ProcessController implements ProcessManager {
+public class ProcessController extends Controller implements ProcessManager {
     private ProcessManager model;
 
     public static ProcessController create(ProcessManager model) {
@@ -19,23 +20,13 @@ public class ProcessController implements ProcessManager {
     }
 
     @Override
-    public void startProcess(Process processName) throws IOException {
-        model.startProcess(processName);
+    public void startProcess(Process processName, String filename) throws IOException {
+        model.startProcess(processName, filename);
     }
 
     @Override
-    public void stopProcess(Process startedProcess) {
-        model.stopProcess(startedProcess);
-    }
-
-    @Override
-    public void exitProcess() {
-        model.exitProcess();
-    }
-
-    @Override
-    public void chooseFileProcess() {
-        model.chooseFileProcess();
+    public void stopProcess(Process startedProcess, String filename) {
+        model.stopProcess(startedProcess, filename);
     }
 
     @Override
@@ -43,17 +34,12 @@ public class ProcessController implements ProcessManager {
         model.startMonitoring(startedProcess);
     }
 
-    public void pauseProcess(Process startedProcess) {
-        model.pauseProcess( startedProcess);
+    public void pauseProcess(Process startedProcess, String filename) {
+        model.pauseProcess(startedProcess, filename);
     }
 
     @Override
-    public void restartProcess(Process startedProcess, Process newProcess) {
-        model.restartProcess(startedProcess, newProcess);
-    }
-
-    @Override
-    public void aboutWindow() {
-        model.aboutWindow();
+    public void restartProcess(Process startedProcess, Process newProcess, String filename) {
+        model.restartProcess(startedProcess, newProcess, filename);
     }
 }

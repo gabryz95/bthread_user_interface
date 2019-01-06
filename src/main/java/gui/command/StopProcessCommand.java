@@ -1,26 +1,20 @@
 package gui.command;
 
-import gui.event.StopEvent;
 import gui.singleton.MainProcess;
 
 public class StopProcessCommand extends CommandAbs {
 
-    public StopProcessCommand() {
-    }
-
     @Override
     public void execute() {
         if (filename != null)
-            receiver.stopProcess(stopProcess(filename));
+            receiver.stopProcess(stopProcess(), filename);
     }
 
-    protected Process stopProcess(String fileName){
+    protected Process stopProcess() {
         Process process = MainProcess.getMainProcess().getCurrentProcess();
-        if(process != null){
-            this.setChanged();
-            this.notifyObservers(new StopEvent(fileName));
+        if (process != null) {
             return process;
-        }else{
+        } else {
             return null;
         }
     }

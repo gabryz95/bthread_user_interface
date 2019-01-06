@@ -1,7 +1,9 @@
 package gui.event;
 
+import gui.style.Style;
+
 public class AboutEvent {
     public String getString() {
-        return "About window\n";
+        return Style.getHour() + "[INFO] Open About Window\n";
     }
 }

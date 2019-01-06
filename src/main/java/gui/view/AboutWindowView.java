@@ -1,9 +1,7 @@
 package gui.view;
 
 import gui.event.AboutEvent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.stage.Stage;
 
 import java.util.Observable;
 import java.util.Observer;

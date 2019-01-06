@@ -1,7 +1,8 @@
-package gui.view;
+package gui.view.table;
 
 import gui.model.date.Semaphore;
-import gui.view.table.SemaphoreTable;
+import gui.view.JavaFXInitTest;
+import gui.view.table.MutexTable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.Before;
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class SemaphoreTableTest {
+public class MutexTableTest {
 
-    private SemaphoreTable semaphoreTable;
+    private MutexTable mutexTable;
     private ObservableList<Semaphore> observableList;
 
     @Before
@@ -25,21 +26,19 @@ public class SemaphoreTableTest {
 
     @Test
     public void create01() {
-        semaphoreTable = SemaphoreTable.create(null);
-        assertNull(semaphoreTable);
-
+        mutexTable = MutexTable.create(null);
+        assertNull(mutexTable);
     }
 
     @Test
     public void create02() {
-
-        semaphoreTable = SemaphoreTable.create(observableList);
-        assertNotNull(semaphoreTable);
+        mutexTable = MutexTable.create(observableList);
+        assertNotNull(mutexTable);
     }
 
     @Test
-    public void getTableView() {
-        semaphoreTable = SemaphoreTable.create(observableList);
-        assertEquals(semaphoreTable.getTableView(), semaphoreTable.getTableView());
+    public void getTableView(){
+        mutexTable = MutexTable.create(observableList);
+        assertEquals(mutexTable.getTableView(), mutexTable.getTableView());
     }
 }

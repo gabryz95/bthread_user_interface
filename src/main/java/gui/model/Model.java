@@ -1,9 +1,6 @@
 package gui.model;
 
-import gui.event.AboutEvent;
-import gui.event.ChooseFileEvent;
-import gui.event.ExitEvent;
-import gui.event.MonitoringStartedEvent;
+import gui.event.*;
 import gui.interfaces.ProcessManager;
 import gui.model.date.*;
 import gui.singleton.MainProcess;
@@ -11,7 +8,10 @@ import gui.view.MainWindowView;
 import gui.view.ganttchart.GantChartInitialize;
 import javafx.collections.ObservableList;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Observable;
 
 public class Model extends Observable implements ProcessManager {
@@ -27,6 +27,7 @@ public class Model extends Observable implements ProcessManager {
     protected ObservableList<Semaphore> semaphoreList;
     protected ObservableList<Barrier> barrierList;
     protected ObservableList<Condition> conditionList;
+    protected volatile boolean isPuased = false;
 
 
     //singleton
@@ -63,18 +64,19 @@ public class Model extends Observable implements ProcessManager {
 
     //TODO: eliminare tutti gli elemnti delle liste delle tabelle quando rifaccio partire il processo
     @Override
-    public void startProcess(Process initProcess) throws IOException {
+    public void startProcess(Process initProcess, String filename) throws IOException {
         if (MainProcess.getMainProcess().getCurrentProcess() == null) {
             MainProcess.getMainProcess().setCurrentProcess(initProcess);
             clearList();
-            this.setChanged();
             opt = OutputProcessingThread.create(initProcess, MainWindowView.getObserverList(), parser);
             tableThread = new Thread(opt);
             tableThread.setDaemon(false);
             tableThread.start();
             ganttThread = new Thread(MainWindowView.getInstance().gantChartInitialize);
             ganttThread.setDaemon(true);
-            ganttThread.start();
+            //ganttThread.start();
+            this.setChanged();
+            notifyObservers(new StartEvent(filename));
         } else {
             throw new IOException("start process is not null");
         }
@@ -82,28 +84,17 @@ public class Model extends Observable implements ProcessManager {
 
 
     @Override
-    public void stopProcess(Process startedProcess) {
+    public void stopProcess(Process startedProcess, String filename) {
         startedProcess.destroyForcibly();
         MainProcess.getMainProcess().setCurrentProcess(null);
         MainWindowView.getInstance().gantChartInitialize.setIsRunning(false);
         try {
             tableThread.join();
+            this.setChanged();
+            notifyObservers(new StopEvent(filename));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void exitProcess() {
-        this.setChanged();
-        this.notifyObservers(new ExitEvent());
-    }
-
-    //NON DEVE STARE NEL MODEL
-    @Override
-    public void chooseFileProcess() {
-        this.setChanged();
-        this.notifyObservers(new ChooseFileEvent());
     }
 
     @Override
@@ -116,30 +107,38 @@ public class Model extends Observable implements ProcessManager {
     }
 
     @Override
-    public void pauseProcess(Process startedProcess) {
-        if (startedProcess != null) {
-            //TODO: controllare processo se è in pausa tramite POSIX
-        }
-    }
-
-    @Override
-    public void restartProcess(Process startedProcess, Process newProcess) {
-        startedProcess.destroyForcibly();
-        MainProcess.getMainProcess().setCurrentProcess(null);
+    public void pauseProcess(Process startedProcess, String filename) {
+        //TODO: controllare processo se è in pausa tramite POSIX
         try {
-            startProcess(newProcess);
+            int pid_process = executeProcessPid() + 1;
+            if (!isPuased) {
+                Runtime.getRuntime().exec("kill -SIGSTOP " + pid_process);
+                isPuased = !isPuased;
+                this.setChanged();
+                notifyObservers(new PauseEvent(filename));
+            } else {
+                Runtime.getRuntime().exec("kill -SIGCONT " + pid_process);
+                isPuased = !isPuased;
+                this.setChanged();
+                notifyObservers(new NotPauseEvent(filename));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void aboutWindow() {
-        this.setChanged();
-        this.notifyObservers(new AboutEvent());
+    public void restartProcess(Process startedProcess, Process newProcess, String filename) {
+        startedProcess.destroyForcibly();
+        MainProcess.getMainProcess().setCurrentProcess(null);
+        try {
+            startProcess(newProcess, filename);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void clearList() {
+    private void clearList() {
         statusList.clear();
         lockList.clear();
         mutexList.clear();
@@ -147,4 +146,24 @@ public class Model extends Observable implements ProcessManager {
         barrierList.clear();
         conditionList.clear();
     }
+
+    private int executeProcessPid() throws IOException {
+        int pid_process = 0;
+        Process process = Runtime.getRuntime().exec("jps -l");
+
+        String line;
+        BufferedReader in = new BufferedReader(new InputStreamReader(
+                process.getInputStream(), "UTF-8"));
+
+        for (int i = 0; i < 20; i++) {
+            line = in.readLine();
+            String[] javaProcess = line.split(" ");
+            if (javaProcess.length > 2 && javaProcess[1].equalsIgnoreCase("Main")) {
+                pid_process = Integer.valueOf(javaProcess[0]);
+            }
+        }
+        process.destroyForcibly();
+        return pid_process;
+    }
+
 }

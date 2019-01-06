@@ -1,6 +1,5 @@
 package gui.controller.tableListController;
 
-import gui.controller.ManageQueue;
 import gui.model.date.Condition;
 import gui.view.MainWindowView;
 

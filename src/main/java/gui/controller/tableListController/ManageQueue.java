@@ -1,4 +1,4 @@
-package gui.controller;
+package gui.controller.tableListController;
 
 public abstract class ManageQueue {
 

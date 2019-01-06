@@ -57,3 +57,13 @@
     -fx-background-image: url("icons/monitoring-hover.png");
     -fx-cursor: hand;
 }
+
+.pauseBtn{
+    -fx-background-color: #30323f;
+    -fx-background-image: url("icons/pause.png");
+}
+
+.pauseBtn:hover{
+    -fx-background-image: url("icons/pause.png");
+    -fx-cursor: hand;
+}

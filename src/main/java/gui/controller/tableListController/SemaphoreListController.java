@@ -1,6 +1,5 @@
 package gui.controller.tableListController;
 
-import gui.controller.ManageQueue;
 import gui.model.date.Semaphore;
 import gui.view.MainWindowView;
 import javafx.collections.ObservableList;

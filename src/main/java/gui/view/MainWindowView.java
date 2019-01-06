@@ -1,11 +1,15 @@
 package gui.view;
 
+import gui.controller.AboutWindowController;
+import gui.controller.ChooseFileController;
+import gui.controller.ExitController;
 import gui.controller.ProcessController;
 import gui.mediator.CreateMediator;
 import gui.mediator.MenuBarMediator;
 import gui.model.*;
 import gui.model.date.*;
 import gui.style.Style;
+import gui.view.buttonbar.SideBarView;
 import gui.view.ganttchart.GantChartInitialize;
 import gui.view.menubar.MenuBarView;
 import gui.view.table.*;
@@ -58,13 +62,25 @@ public class MainWindowView {
         //Model instance
         parser = new Parser();
         Model model = Model.create(parser, statusList, lockList, mutexList, semaphoreList, barrierList, conditionList);
+        AboutWindow aboutWindow = new AboutWindow();
+        Exit exit = new Exit();
+        ChooseFile chooseFile = new ChooseFile();
         //Controllers
         ProcessController controller = ProcessController.create(model);
+        AboutWindowController aboutWindowController = AboutWindowController.create(primaryStage, aboutWindow);
+        
+        ExitController exitController = ExitController.create(exit);
+        exitController.setStage(primaryStage);
 
-        //Gui
+        ChooseFileController chooseFileController = ChooseFileController.create(primaryStage, chooseFile);
+        ////Gui
+        //Console
         ConsoleView console = ConsoleView.create();
-        MenuBarView menubar = new MenuBarView(primaryStage, controller);
-        SidebarView sideLeftBar = new SidebarView(primaryStage, controller);
+        //Menu Bar
+        MenuBarView menubar = MenuBarView.create(controller, aboutWindowController, exitController, chooseFileController);
+        //Side button bar
+        SideBarView sideLeftBar = SideBarView.create(controller, chooseFileController);
+        //AGntt
         gantChartInitialize = GantChartInitialize.create();
         gantChartInitialize.setBthreadList(bthreadList.get());
         aboutWindowView = new AboutWindowView();
@@ -82,18 +98,34 @@ public class MainWindowView {
                 barrierList, conditionList);
 
         MenuBarMediator menuBarMediator = MenuBarMediator.create();
+
         menuBarMediator.setStartProcessMenuItem(menubar.getStartProcessItemMenu());
         menuBarMediator.setPauseProcessMenuItem(menubar.getPauseItemMenu());
         menuBarMediator.setStopProcessMenuItem(menubar.getStopProcessItemMenu());
         menuBarMediator.setRestartProcessItem(menubar.getRestartItemMenu());
         menuBarMediator.setStartMonitoringMenuItem(menubar.getStartMonitoringItemMenu());
+        menuBarMediator.setChooseFileMenuItem(menubar.getChooseFileItemMenu());
         menuBarMediator.setAboutWindow(menubar.getWindowItemMenu());
+
+        menuBarMediator.setChooseFileSideButton(sideLeftBar.getOpenBtn());
+        menuBarMediator.setStartProcessSideButton(sideLeftBar.getStartBtn());
+        menuBarMediator.setPauseProcessSideButton(sideLeftBar.getPauseBtn());
+        menuBarMediator.setStopProcessSideButton(sideLeftBar.getStopBtn());
+        menuBarMediator.setRestartProcessSideButton(sideLeftBar.getRestartBtn());
+        menuBarMediator.setStartMonitoringSideButton(sideLeftBar.getMonitoringBtn());
 
         menubar.getStartProcessItemMenu().getMenuItem().setDisable(true);
         menubar.getPauseItemMenu().getMenuItem().setDisable(true);
         menubar.getStopProcessItemMenu().getMenuItem().setDisable(true);
         menubar.getRestartItemMenu().getMenuItem().setDisable(true);
         menubar.getStartMonitoringItemMenu().getMenuItem().setDisable(true);
+
+        sideLeftBar.getOpenBtn().getSideButton().setDisable(false);
+        sideLeftBar.getStartBtn().getSideButton().setDisable(true);
+        sideLeftBar.getPauseBtn().getSideButton().setDisable(true);
+        sideLeftBar.getStopBtn().getSideButton().setDisable(true);
+        sideLeftBar.getRestartBtn().getSideButton().setDisable(true);
+        sideLeftBar.getMonitoringBtn().getSideButton().setDisable(true);
 
         Scene scene = new Scene(root, 1000, 1000);
         scene.getStylesheets().add("mainWindow.css");
@@ -133,16 +165,19 @@ public class MainWindowView {
         primaryStage.show();
 
         //observer
-        //add observer to list
+        //add observer
         parser.addObserver(createMediator);
         model.addObserver(console);
         model.addObserver(menuBarMediator);
-        model.addObserver(aboutWindowView);
+        aboutWindow.addObserver(aboutWindowView);
+        aboutWindow.addObserver(console);
+        exit.addObserver(console);
+        chooseFile.addObserver(console);
+        chooseFile.addObserver(menuBarMediator);
 
         //add observer to observerList
         observerList.add(console);
-        observerList.add(menuBarMediator);
-        observerList.add(aboutWindowView);
+
     }
 
     private MainWindowView() {

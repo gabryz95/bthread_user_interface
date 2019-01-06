@@ -1,41 +1,31 @@
 package gui.controller;
 
 import gui.interfaces.ChooserFileManager;
-import gui.view.menubar.MenuBarView;
+import gui.interfaces.Controller;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-
 import java.io.File;
 
-public class ChooseFileController implements ChooserFileManager {
+public class ChooseFileController extends Controller implements ChooserFileManager {
 
-    private Stage stage;
-    private ProcessController receiver;
-    private final FileChooser fileChooser;
+    protected Stage stage;
+    protected ChooserFileManager receiver;
+    protected FileChooser fileChooser;
 
-    public ChooseFileController(Stage stage, ProcessController model) {
-        this.stage = stage;
-        this.receiver = model;
-        fileChooser = new FileChooser();
-    }
-
-    public void execute() {
+    public static ChooseFileController create(Stage stage, ChooserFileManager receiver) {
         if (stage == null)
-            return;
+            return null;
+        if (receiver == null)
+            return null;
 
-        try {
-            File file = fileChooser.showOpenDialog(stage);
-            if (isValid(file)) {
-                MenuBarView.EXECUTABLE_FILE = file.getAbsolutePath();
-                receiver.chooseFileProcess();
-            }
-        } catch (final NullPointerException e) {
-            e.printStackTrace();
-        }
+        ChooseFileController chooseFileController = new ChooseFileController();
+        chooseFileController.stage = stage;
+        chooseFileController.receiver = receiver;
+        chooseFileController.fileChooser = new FileChooser();
+        return chooseFileController;
     }
 
-    @Override
     public boolean isValid(final File file) {
 
         boolean eseguibile = file.canExecute();
@@ -48,5 +38,18 @@ public class ChooseFileController implements ChooserFileManager {
             throw new IllegalArgumentException("non file");
         }
         return true;
+    }
+
+    @Override
+    public void chooseFileProcess() {
+        receiver.chooseFileProcess();
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public FileChooser getFileChooser() {
+        return fileChooser;
     }
 }
