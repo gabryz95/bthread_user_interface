@@ -12,6 +12,6 @@ public class RestartEventTest {
 
     @Test
     public void getString() {
-//        assertEquals(Style.getHour() + "Restart process: " + fileName, restartEvent.getString());
+        assertEquals(Style.getHour() + "[INFO]  Restart process: " + fileName, restartEvent.getString());
     }
 }

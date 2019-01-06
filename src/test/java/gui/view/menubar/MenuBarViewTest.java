@@ -5,7 +5,6 @@ import org.mockito.Mockito;
 
 import static org.junit.Assert.assertEquals;
 
-
 public class MenuBarViewTest {
 
     @Test
