@@ -1,21 +1,20 @@
 package gui.controller.tableListController;
 
 import gui.model.date.Barrier;
+import gui.model.date.datemodel.BarrierModel;
 import gui.view.MainWindowView;
-
-import java.util.List;
 
 //TODO: possibilità di utilizzo dello strategi pattern/state
 public class BarrierListController extends ManageQueue {
 
-    protected List<Barrier> barrierList;
+    protected BarrierModel barrierModel;
 
-    public static BarrierListController create(List<Barrier> barrierList) {
-        if (barrierList == null)
+    public static BarrierListController create(BarrierModel barrierModel) {
+        if (barrierModel == null)
             return null;
 
         BarrierListController barrierListController = new BarrierListController();
-        barrierListController.barrierList = barrierList;
+        barrierListController.barrierModel = barrierModel;
         return barrierListController;
     }
 
@@ -30,11 +29,12 @@ public class BarrierListController extends ManageQueue {
     }
 
     protected void barrierUnlockFunction(Barrier barrier) {
-        for (Barrier element : barrierList) {
+        for (int i = 0; i < barrierModel.listSize(); i++) {
+            Barrier element = barrierModel.getElementByIndex(i);
             if (element.getAddress().equalsIgnoreCase(barrier.getAddress())) {
                 if (barrier.getSize() == barrier.getCounter()) {
-                    element.setQueue(null);
-                    element.setCounter(0);
+                    barrierModel.updateElementQueue(i, null);
+                    barrierModel.updateElementCounter(i, 0);
                     reloadData();
                 }
             }
@@ -44,18 +44,19 @@ public class BarrierListController extends ManageQueue {
 
 
     protected void barrierWaitfunction(Barrier barrier) {
-        for (Barrier element : barrierList) {
+        for (int i = 0; i < barrierModel.listSize(); i++) {
+            Barrier element = barrierModel.getElementByIndex(i);
             if (element.getAddress().equalsIgnoreCase(barrier.getAddress())) {
-                element.setCounter(barrier.getCounter());
-                element.setQueue(addElement(element.getQueue(), barrier.getThreadId()));
+                barrierModel.updateElementQueue(i, addElement(element.getQueue(), barrier.getThreadId()));
+                barrierModel.updateElementCounter(i, barrier.getCounter());
                 reloadData();
                 return;
             }
         }
-        barrierList.add(barrier);
+        barrierModel.addElement(barrier);
     }
 
-    private void reloadData() {
-        MainWindowView.barrierTable.getTableView().refresh(); //TODO: da sistemare
+    protected void reloadData() {
+        MainWindowView.barrierTable.getTableView().refresh();
     }
 }

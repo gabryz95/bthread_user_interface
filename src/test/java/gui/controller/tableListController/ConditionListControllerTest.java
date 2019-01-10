@@ -1,6 +1,7 @@
 package gui.controller.tableListController;
 
 import gui.model.date.Condition;
+import gui.model.date.datemodel.ConditionModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,15 +14,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ConditionListControllerTest {
 
-    private ConditionListController conditionListController;
-    private ConditionListController conditionListController1;
     private ObservableList<Condition> conditionObservableList;
+    private ConditionModel conditionModel;
+    private ConditionListController conditionListController;
 
     @BeforeEach
     public void setUp() {
         conditionObservableList = FXCollections.observableArrayList(new ArrayList<>());
-        conditionListController = ConditionListController.create(conditionObservableList);
-        conditionListController1 = Mockito.mock(ConditionListController.class);
+        conditionModel = ConditionModel.create(conditionObservableList);
+        conditionListController = Mockito.spy(ConditionListController.create(conditionModel));
+        Mockito.doNothing().when(conditionListController).reloadData();
     }
 
     @Test
@@ -34,66 +36,68 @@ public class ConditionListControllerTest {
         assertNotNull(conditionListController);
     }
 
-
     @Test
     public void controll01() {
-        Condition condition = Mockito.mock(Condition.class);
-        conditionListController1.controll(condition);
-        Mockito.verify(conditionListController1, Mockito.times(1)).controll(condition);
+        Condition condition = Condition.create("(CONDSIGNAL) 2 0x10f8760b8");
+        conditionListController.controll(condition);
+        Mockito.verify(conditionListController, Mockito.times(1)).condsignalFunction(condition);
     }
 
     @Test
     public void controll02() {
-        Condition condition = Condition.create("(CONDSIGNAL) 2 0x10f8760b8");
-        conditionListController1.condsignalFunction(condition);
-        Mockito.verify(conditionListController1, Mockito.times(1)).condsignalFunction(condition);
+        Condition condition = Condition.create("(CONDBROADCAST) 2 0x10f8760b0");
+        conditionListController.controll(condition);
+        Mockito.verify(conditionListController, Mockito.times(1)).condbroadcastFunction(condition);
     }
 
     @Test
     public void controll03() {
-        Condition condition = Condition.create("(CONDBROADCAST) 2 0x10f8760b0");
-        conditionListController1.condbroadcastFunction(condition);
-        Mockito.verify(conditionListController1, Mockito.times(1)).condbroadcastFunction(condition);
-    }
-
-    @Test
-    public void controll04() {
         Condition condition = Condition.create("(CONDBLOCKED) 2 0x10f8760b0");
-        conditionListController1.condblockedFunction(condition);
-        Mockito.verify(conditionListController1, Mockito.times(1)).condblockedFunction(condition);
+        conditionListController.controll(condition);
+        Mockito.verify(conditionListController, Mockito.times(1)).condblockedFunction(condition);
     }
 
     @Test
     void condblockedFunction01() {
         Condition condition = Condition.create("(CONDBLOCKED) 2 0x10f8760b0");
         conditionListController.condblockedFunction(condition);
-        assertEquals("2", conditionListController.conditionList.get(0).getQueue());
+        assertEquals("2", conditionModel.getElementByIndex(0).getQueue());
     }
 
     @Test
     void condblockedFunction02() {
-        Condition condition = Condition.create("(CONDBLOCKED) 2 0x10f8760b0");
-        conditionListController.condblockedFunction(condition);
-        Condition condition1 = Condition.create("(CONDBLOCKED) 3 0x10f8760b0");
-//        conditionListController.condblockedFunction(condition1);
-//        assertEquals("2 , 3", conditionListController.conditionList.get(0).getQueue());
+        Condition condition1 = Condition.create("(CONDBLOCKED) 2 0x10f8760b0");
+        conditionListController.condblockedFunction(condition1);
+        assertEquals("2", conditionModel.getElementByIndex(0).getQueue());
+
+        Condition condition2 = Condition.create("(CONDBLOCKED) 3 0x10f8760b0");
+        conditionListController.condblockedFunction(condition2);
+        assertEquals("2 , 3", conditionModel.getElementByIndex(0).getQueue());
     }
 
     @Test
     void condbroadcastFunction() {
-        Condition condition = Condition.create("(CONDBLOCKED) 2 0x10f8760b0");
-        conditionListController.condblockedFunction(condition);
-        Condition condition1 = Condition.create("(CONDBROADCAST) 2 0x10f8760b0");
-//        conditionListController.condbroadcastFunction(condition1);
-//        assertEquals(null, conditionListController.conditionList.get(0).getQueue());
+        Condition condition1 = Condition.create("(CONDBLOCKED) 2 0x10f8760b0");
+        conditionListController.condblockedFunction(condition1);
+        assertEquals("2", conditionModel.getElementByIndex(0).getQueue());
+
+        Condition condition2 = Condition.create("(CONDBROADCAST) 2 0x10f8760b0");
+        conditionListController.condbroadcastFunction(condition2);
+        assertNull(conditionModel.getElementByIndex(0).getQueue());
     }
 
     @Test
     void condsignalFunction() {
-        Condition condition = Condition.create("(CONDBLOCKED) 2 0x10f8760b0");
-        conditionListController.condblockedFunction(condition);
-        Condition condition1 = Condition.create("(CONDSIGNAL) 2 0x10f8760b0");
-//        conditionListController.condsignalFunction(condition1);
-//        assertEquals("", conditionListController.conditionList.get(0).getQueue());
+        Condition condition1 = Condition.create("(CONDBLOCKED) 2 0x10f8760b0");
+        conditionListController.condblockedFunction(condition1);
+        assertEquals("2", conditionModel.getElementByIndex(0).getQueue());
+
+        Condition condition2 = Condition.create("(CONDBLOCKED) 3 0x10f8760b0");
+        conditionListController.condblockedFunction(condition2);
+        assertEquals("2 , 3", conditionModel.getElementByIndex(0).getQueue());
+
+        Condition condition3 = Condition.create("(CONDSIGNAL) 2 0x10f8760b0");
+        conditionListController.condsignalFunction(condition3);
+        assertEquals("3", conditionModel.getElementByIndex(0).getQueue());
     }
 }

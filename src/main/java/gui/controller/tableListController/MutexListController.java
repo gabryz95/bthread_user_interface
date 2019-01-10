@@ -1,21 +1,20 @@
 package gui.controller.tableListController;
 
 import gui.model.date.Mutex;
+import gui.model.date.datemodel.MutexModel;
 import gui.view.MainWindowView;
 
-
-import java.util.List;
-
 public class MutexListController extends ManageQueue {
-    private List<Mutex> mutexList;
 
-    public static MutexListController create(List<Mutex> mutexList) {
+    protected MutexModel mutexModel;
 
-        if (mutexList == null)
+    public static MutexListController create(MutexModel mutexModel) {
+
+        if (mutexModel == null)
             return null;
 
         MutexListController mutexListController = new MutexListController();
-        mutexListController.mutexList = mutexList;
+        mutexListController.mutexModel = mutexModel;
         return mutexListController;
     }
 
@@ -28,36 +27,37 @@ public class MutexListController extends ManageQueue {
     }
 
     protected void mutacuireFunction(Mutex mutex) {
-        for (Mutex element : mutexList) {
+        final int size = mutexModel.getMutexList().size();
+        for (int i = 0; i < size; i++) {
+            Mutex element = mutexModel.getMutexList().get(i);
             if (element.getAddress().equalsIgnoreCase(mutex.getAddress())) {
                 if (element.getThreadId() == mutex.getThreadId())
                     return;
-                element.setQueue(addElement(element.getQueue(), mutex.getThreadId()));
+                mutexModel.updateElementQueue(i, addElement(element.getQueue(), mutex.getThreadId()));
                 reloadData();
                 return;
             }
         }
-        mutexList.add(mutex);
+        mutexModel.addElement(mutex);
     }
 
     protected void mutreleaseFunction(Mutex mutex) {
-        final int size = mutexList.size();
+        final int size = mutexModel.getMutexList().size();
         for (int i = 0; i < size; i++) {
-            Mutex element = mutexList.get(i);
+            Mutex element = mutexModel.getMutexList().get(i);
             if (element.getAddress().equalsIgnoreCase(mutex.getAddress())) {
                 if (element.getThreadId() == mutex.getThreadId()) {
                     if (element.getQueue().isEmpty())
-                        mutexList.remove(i);
-                    else {
-                        element.setQueue(calculateNewQueue(element.getQueue()));
-                    }
+                        mutexModel.deleteElement(i);
+                    else
+                        mutexModel.updateElementQueue(i, calculateNewQueue(element.getQueue()));
                     reloadData();
                 }
             }
         }
     }
 
-    private void reloadData() {
-        MainWindowView.mutexTable.getTableView().refresh(); //TODO: da sistemare
+    protected void reloadData() {
+        MainWindowView.mutexTable.getTableView().refresh();
     }
 }

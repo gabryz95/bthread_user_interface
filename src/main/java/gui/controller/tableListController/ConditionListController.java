@@ -1,21 +1,21 @@
 package gui.controller.tableListController;
 
-import gui.model.date.Condition;
-import gui.view.MainWindowView;
 
-import java.util.List;
+import gui.model.date.Condition;
+import gui.model.date.datemodel.ConditionModel;
+import gui.view.MainWindowView;
 
 public class ConditionListController extends ManageQueue {
 
-    protected List<Condition> conditionList;
+    protected ConditionModel conditionModel;
 
-    public static ConditionListController create(List<Condition> conditionList) {
+    public static ConditionListController create(ConditionModel conditionModel) {
 
-        if (conditionList == null)
+        if (conditionModel == null)
             return null;
 
         ConditionListController conditionListController = new ConditionListController();
-        conditionListController.conditionList = conditionList;
+        conditionListController.conditionModel = conditionModel;
         return conditionListController;
     }
 
@@ -31,36 +31,39 @@ public class ConditionListController extends ManageQueue {
     }
 
     protected void condblockedFunction(Condition condition) {
-        for (Condition element : conditionList) {
+        for (int i = 0; i < conditionModel.listSize(); i++) {
+            Condition element = conditionModel.getElementByIndex(i);
             if (element.getAddress().equalsIgnoreCase(condition.getAddress())) {
-                element.setQueue(addElement(element.getQueue(), condition.getThreadId()));
+                conditionModel.updateElementQueue(i, addElement(element.getQueue(), condition.getThreadId()));
                 reloadData();
                 return;
             }
         }
         condition.setQueue(addElement(condition.getQueue(), condition.getThreadId()));
-        conditionList.add(condition);
+        conditionModel.addElement(condition);
     }
 
     protected void condbroadcastFunction(Condition condition) {
-        for (Condition element : conditionList) {
+        for (int i = 0; i < conditionModel.listSize(); i++) {
+            Condition element = conditionModel.getElementByIndex(i);
             if (element.getAddress().equalsIgnoreCase(condition.getAddress())) {
-                element.setQueue(null);
+                conditionModel.updateElementQueue(i, null);
                 reloadData();
             }
         }
     }
 
     protected void condsignalFunction(Condition condition) {
-        for (Condition element : conditionList) {
+        for (int i = 0; i < conditionModel.listSize(); i++) {
+            Condition element = conditionModel.getElementByIndex(i);
             if (element.getAddress().equalsIgnoreCase(condition.getAddress())) {
-                element.setQueue(calculateNewQueue(element.getQueue()));
+                conditionModel.updateElementQueue(i, calculateNewQueue(element.getQueue()));
                 reloadData();
             }
         }
     }
 
-    private void reloadData() {
-        MainWindowView.conditionTable.getTableView().refresh(); //TODO: da sistemare
+    protected void reloadData() {
+        MainWindowView.conditionTable.getTableView().refresh();
     }
 }

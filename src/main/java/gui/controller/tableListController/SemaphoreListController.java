@@ -1,21 +1,21 @@
 package gui.controller.tableListController;
 
 import gui.model.date.Semaphore;
+import gui.model.date.datemodel.SemaphoreModel;
 import gui.view.MainWindowView;
-import javafx.collections.ObservableList;
 
 
 public class SemaphoreListController extends ManageQueue {
 
-    protected ObservableList<Semaphore> semaphoreList;
+    protected SemaphoreModel semaphoreModel;
 
-    public static SemaphoreListController create(ObservableList<Semaphore> semaphoreList) {
+    public static SemaphoreListController create(SemaphoreModel semaphoreModel) {
 
-        if (semaphoreList == null)
+        if (semaphoreModel == null)
             return null;
 
         SemaphoreListController semaphoreListController = new SemaphoreListController();
-        semaphoreListController.semaphoreList = semaphoreList;
+        semaphoreListController.semaphoreModel = semaphoreModel;
         return semaphoreListController;
     }
 
@@ -30,28 +30,30 @@ public class SemaphoreListController extends ManageQueue {
     }
 
     public void sewaitFunction(Semaphore semaphore) {
-        for (Semaphore item : semaphoreList) {
+        for (int i = 0; i < semaphoreModel.listSize(); i++) {
+            Semaphore item = semaphoreModel.getElementByIndex(i);
             if (item.getAddress().equals(semaphore.getAddress())) {
                 if (item.getCounter() == 0)
-                    item.setQueue(addElement(item.getQueue(), semaphore.getThreadId()));
+                    semaphoreModel.updateElementQueue(i, addElement(item.getQueue(), semaphore.getThreadId()));
                 else
-                    item.setCounter(item.getCounter() - 1);
+                    semaphoreModel.updateElementCounter(i, (item.getCounter() - 1));
                 reloadData();
                 return;
             }
         }
         if (semaphore.getCounter() == 0)
             semaphore.setQueue(String.valueOf(semaphore.getThreadId()));
-        semaphoreList.add(semaphore);
+        semaphoreModel.addElement(semaphore);
     }
 
     public void semacquireFunction(Semaphore semaphore) {
-        for (Semaphore item : semaphoreList) {
+        for (int i = 0; i < semaphoreModel.listSize(); i++) {
+            Semaphore item = semaphoreModel.getElementByIndex(i);
             if (item.getAddress().equals(semaphore.getAddress())) {
                 if (!item.getQueue().isEmpty()) {
                     if (item.getCounter() > 0)
-                        item.setCounter(item.getCounter() - 1);
-                    item.setQueue(calculateNewQueue(item.getQueue()));
+                        semaphoreModel.updateElementCounter(i, (item.getCounter() - 1));
+                    semaphoreModel.updateElementQueue(i, calculateNewQueue(item.getQueue()));
                 }
                 reloadData();
             }
@@ -59,18 +61,19 @@ public class SemaphoreListController extends ManageQueue {
     }
 
     public void sempostFunction(Semaphore semaphore) {
-        for (Semaphore item : semaphoreList) {
+        for (int i = 0; i < semaphoreModel.listSize(); i++) {
+            Semaphore item = semaphoreModel.getElementByIndex(i);
             if (item.getAddress().equalsIgnoreCase(semaphore.getAddress())) {
-                item.setCounter(item.getCounter() + 1);
+                semaphoreModel.updateElementCounter(i, (item.getCounter() + 1));
                 reloadData();
                 return;
             }
         }
         semaphore.setCounter(semaphore.getCounter() + 1);
-        semaphoreList.add(semaphore);
+        semaphoreModel.addElement(semaphore);
     }
 
-    private void reloadData() {
-        MainWindowView.semaphoreTable.getTableView().refresh(); //TODO: da sistemare
+    protected void reloadData() {
+        MainWindowView.semaphoreTable.getTableView().refresh();
     }
 }

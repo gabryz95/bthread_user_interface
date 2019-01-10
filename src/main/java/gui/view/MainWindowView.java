@@ -8,8 +8,11 @@ import gui.mediator.CreateMediator;
 import gui.mediator.MenuBarMediator;
 import gui.model.*;
 import gui.model.date.*;
+import gui.model.date.datemodel.*;
 import gui.style.Style;
 import gui.view.buttonbar.SideBarView;
+import gui.view.console.ConsoleAbstract;
+import gui.view.console.ConsoleView;
 import gui.view.ganttchart.GantChartInitialize;
 import gui.view.menubar.MenuBarView;
 import gui.view.table.*;
@@ -19,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -59,31 +63,51 @@ public class MainWindowView {
         TabPane tabContentPane = new TabPane();
 
         root.getStyleClass().add("main");
-        //Model instance
+
+        //Parser instance
         parser = new Parser();
         Model model = Model.create(parser, statusList, lockList, mutexList, semaphoreList, barrierList, conditionList);
+
+        //Model instance
         AboutWindow aboutWindow = new AboutWindow();
         Exit exit = new Exit();
         ChooseFile chooseFile = new ChooseFile();
+
+        //
+        StatusModel statusModel = StatusModel.create(statusList);
+        LockModel lockModel = LockModel.create(lockList);
+        MutexModel mutexModel = MutexModel.create(mutexList);
+        BarrierModel barrierModel = BarrierModel.create(barrierList);
+        SemaphoreModel semaphoreModel = SemaphoreModel.create(semaphoreList);
+        ConditionModel conditionModel = ConditionModel.create(conditionList);
         //Controllers
         ProcessController controller = ProcessController.create(model);
         AboutWindowController aboutWindowController = AboutWindowController.create(primaryStage, aboutWindow);
-        
+
         ExitController exitController = ExitController.create(exit);
         exitController.setStage(primaryStage);
 
         ChooseFileController chooseFileController = ChooseFileController.create(primaryStage, chooseFile);
+
         ////Gui
+
         //Console
-        ConsoleView console = ConsoleView.create();
+        ConsoleView console = (ConsoleView) ConsoleAbstract.create();
+        //ConsoleOutput consoleOutput = (ConsoleOutput) ConsoleAbstract.create();
+
         //Menu Bar
         MenuBarView menubar = MenuBarView.create(controller, aboutWindowController, exitController, chooseFileController);
+
         //Side button bar
         SideBarView sideLeftBar = SideBarView.create(controller, chooseFileController);
-        //AGntt
+
+        //Gantt
         gantChartInitialize = GantChartInitialize.create();
         gantChartInitialize.setBthreadList(bthreadList.get());
+
+        //About Window
         aboutWindowView = new AboutWindowView();
+
         //table
         tableView = StatusTable.create(statusList);
         mutexTable = MutexTable.create(mutexList);
@@ -94,8 +118,8 @@ public class MainWindowView {
 
 
         //Mediators
-        CreateMediator createMediator = CreateMediator.create(statusList, lockList, mutexList, semaphoreList,
-                barrierList, conditionList);
+        CreateMediator createMediator = CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel,
+                barrierModel, conditionModel);
 
         MenuBarMediator menuBarMediator = MenuBarMediator.create();
 
@@ -127,6 +151,7 @@ public class MainWindowView {
         sideLeftBar.getRestartBtn().getSideButton().setDisable(true);
         sideLeftBar.getMonitoringBtn().getSideButton().setDisable(true);
 
+        //Scene
         Scene scene = new Scene(root, 1000, 1000);
         scene.getStylesheets().add("mainWindow.css");
         console.getConsole().appendText(Style.getHour() + "[INFO]  Bthread console started\n");
@@ -137,7 +162,10 @@ public class MainWindowView {
         root.setCenter(mainContentPane);
 
         mainContentPane.setCenter(tabContentPane);
-        mainContentPane.setBottom(console.getConsole());
+
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(console.getConsole());
+        mainContentPane.setBottom(hBox);
 
         //add tabs
         Tab ganttTab = new Tab("Gantt");
@@ -177,7 +205,6 @@ public class MainWindowView {
 
         //add observer to observerList
         observerList.add(console);
-
     }
 
     private MainWindowView() {

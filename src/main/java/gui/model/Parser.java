@@ -30,8 +30,10 @@ public class Parser extends Observable {
         if (line == null)
             return;
 
-        if (!line.startsWith("("))
+        if (!line.startsWith("(")) {
+            //System.out.println(line);
             return;
+        }
 
         String discriminated = line.substring(1, 4);
 

@@ -1,20 +1,21 @@
 package gui.controller.tableListController;
 
 import gui.model.date.Status;
+import gui.model.date.datemodel.StatusModel;
 import gui.view.MainWindowView;
 import javafx.collections.ObservableList;
 
 public class StatusListController {
 
-    protected ObservableList<Status> statusList;
+    protected StatusModel statusModel;
 
-    public static StatusListController create(ObservableList<Status> statusList) {
+    public static StatusListController create(StatusModel statusModel) {
 
-        if (statusList == null)
+        if (statusModel == null)
             return null;
 
         StatusListController statusListController = new StatusListController();
-        statusListController.statusList = statusList;
+        statusListController.statusModel = statusModel;
         return statusListController;
     }
 
@@ -38,19 +39,20 @@ public class StatusListController {
     }
 
     protected void updateValueList(Status status, String value) {
-        for (Status element : statusList) {
+        for (int i = 0; i < statusModel.listSize(); i++) {
+            Status element = statusModel.getElementByIndex(i);
             if (element.getThreadId() == status.getThreadId()) {
-                element.setStatus(value);
+                statusModel.updateElementStatus(i, value);
                 reloadData();
             }
         }
     }
 
     protected void addElementToStatusList(Status status) {
-        statusList.add(status);
+        statusModel.addElement(status);
     }
 
-    private void reloadData() {
-        MainWindowView.tableView.getTableView().refresh(); //TODO: da sistemare
+    protected void reloadData() {
+        MainWindowView.tableView.getTableView().refresh();
     }
 }

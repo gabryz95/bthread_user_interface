@@ -3,6 +3,7 @@ package gui.mediator;
 import gui.controller.tableListController.*;
 import gui.event.myDateEvent.*;
 import gui.model.date.*;
+import gui.model.date.datemodel.*;
 import javafx.collections.ObservableList;
 import lombok.Setter;
 
@@ -19,29 +20,29 @@ public class CreateMediator implements Observer {
     protected BarrierListController barrierListController;
     protected ConditionListController conditionListController;
 
-    public static CreateMediator create(ObservableList<Status> statusList, ObservableList<Lock> lockList, ObservableList<Mutex> mutexList, ObservableList<Semaphore> semaphoreList,
-                                        ObservableList<Barrier> barrierList, ObservableList<Condition> conditionList) {
+    public static CreateMediator create(StatusModel statusModel, LockModel lockModel, MutexModel mutexModel, SemaphoreModel semaphoreModel,
+                                        BarrierModel barrierModel, ConditionModel conditionModel) {
 
-        if (statusList == null)
+        if (statusModel == null)
             return null;
-        if (lockList == null)
+        if (lockModel == null)
             return null;
-        if (mutexList == null)
+        if (mutexModel == null)
             return null;
-        if (semaphoreList == null)
+        if (semaphoreModel == null)
             return null;
-        if (barrierList == null)
+        if (barrierModel == null)
             return null;
-        if (conditionList == null)
+        if (conditionModel == null)
             return null;
 
         CreateMediator createMediator = new CreateMediator();
-        createMediator.statusListController = StatusListController.create(statusList);
-        createMediator.lockListController = LockListController.create(lockList);
-        createMediator.mutexListController = MutexListController.create(mutexList);
-        createMediator.semaphoreListController = SemaphoreListController.create(semaphoreList);
-        createMediator.barrierListController = BarrierListController.create(barrierList);
-        createMediator.conditionListController = ConditionListController.create(conditionList);
+        createMediator.statusListController = StatusListController.create(statusModel);
+        createMediator.lockListController = LockListController.create(lockModel);
+        createMediator.mutexListController = MutexListController.create(mutexModel);
+        createMediator.semaphoreListController = SemaphoreListController.create(semaphoreModel);
+        createMediator.barrierListController = BarrierListController.create(barrierModel);
+        createMediator.conditionListController = ConditionListController.create(conditionModel);
         return createMediator;
     }
 

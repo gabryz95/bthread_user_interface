@@ -1,7 +1,6 @@
-package gui.view;
+package gui.view.console;
 
 import gui.event.*;
-import gui.model.AboutWindow;
 import gui.style.Style;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
@@ -9,27 +8,7 @@ import javafx.scene.control.TextArea;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ConsoleView implements Observer {
-
-    protected TextArea console;
-
-    public static ConsoleView create() {
-        ConsoleView consoleView = new ConsoleView();
-        consoleView.console = new TextArea();
-        consoleView.console.setEditable(false);
-        consoleView.console.setPrefRowCount(10);
-        consoleView.console.getStyleClass().add("console");
-        consoleView.console.getStylesheets().add(Style.getCSS());
-        return consoleView;
-    }
-
-    public TextArea getConsole() {
-        return console;
-    }
-
-    public void clearConsole() {
-        console.clear();
-    }
+public class ConsoleView extends ConsoleAbstract implements Observer {
 
     @Override
     public void update(Observable o, Object event) {

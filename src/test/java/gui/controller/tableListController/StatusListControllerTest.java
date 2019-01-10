@@ -1,6 +1,7 @@
 package gui.controller.tableListController;
 
 import gui.model.date.Status;
+import gui.model.date.datemodel.StatusModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,16 +12,19 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//Todo: aggiungere test al metodo controll()
 public class StatusListControllerTest {
 
-    private StatusListController statusListController;
     private ObservableList<Status> statusObservableList;
+    private StatusModel statusModelmock;
+    private StatusListController statusListController;
+
 
     @BeforeEach
     public void setUp() {
-        statusObservableList = FXCollections.observableArrayList(new ArrayList());
-        statusListController = StatusListController.create(statusObservableList);
+        statusObservableList = FXCollections.observableArrayList(new ArrayList<>());
+        statusModelmock = Mockito.spy(StatusModel.create(statusObservableList));
+        statusListController = Mockito.spy(StatusListController.create(statusModelmock));
+        Mockito.doNothing().when(statusListController).reloadData();
     }
 
     @Test
@@ -36,64 +40,60 @@ public class StatusListControllerTest {
     @Test
     public void controll01() {
         Status status = Status.create("(CREATE) 1");
-        StatusListController statusListController1 = Mockito.mock(StatusListController.class);
-        statusListController1.controll(status);
-        Mockito.verify(statusListController1, Mockito.times(1)).controll(status);
+        statusListController.controll(status);
+        Mockito.verify(statusModelmock, Mockito.times(1)).addElement(status);
     }
 
     @Test
     public void controll02() {
         Status status = Status.create("(READY) 1");
-        StatusListController statusListController1 = Mockito.mock(StatusListController.class);
-        statusListController1.controll(status);
-        Mockito.verify(statusListController1, Mockito.times(1)).controll(status);
+        statusListController.controll(status);
+        Mockito.verify(statusListController, Mockito.times(1)).updateValueList(status, "READY");
     }
 
     @Test
     public void controll03() {
         Status status = Status.create("(SLEEPING) 1");
-        StatusListController statusListController1 = Mockito.mock(StatusListController.class);
-        statusListController1.controll(status);
-        Mockito.verify(statusListController1, Mockito.times(1)).controll(status);
+        statusListController.controll(status);
+        Mockito.verify(statusListController, Mockito.times(1)).updateValueList(status, "SLEEPING");
     }
 
     @Test
     public void controll04() {
         Status status = Status.create("(BLOCKED) 1");
-        StatusListController statusListController1 = Mockito.mock(StatusListController.class);
-        statusListController1.controll(status);
-        Mockito.verify(statusListController1, Mockito.times(1)).controll(status);
+        statusListController.controll(status);
+        Mockito.verify(statusListController, Mockito.times(1)).updateValueList(status, "BLOCKED");
     }
 
     @Test
     public void controll05() {
         Status status = Status.create("(EXIT) 1");
-        StatusListController statusListController1 = Mockito.mock(StatusListController.class);
-        statusListController1.controll(status);
-        Mockito.verify(statusListController1, Mockito.times(1)).controll(status);
+        statusListController.controll(status);
+        Mockito.verify(statusListController, Mockito.times(1)).updateValueList(status, "EXIT");
     }
 
     @Test
     public void controll06() {
         Status status = Status.create("(SCHEDULING) 1");
-        StatusListController statusListController1 = Mockito.mock(StatusListController.class);
-        statusListController1.controll(status);
-        Mockito.verify(statusListController1, Mockito.times(1)).controll(status);
-    }
-
-    @Test
-    public void addElementToStatusList() {
-        Status status = Mockito.mock(Status.class);
-        statusListController.addElementToStatusList(status);
-        assertEquals(1, statusListController.statusList.size());
+        statusListController.controll(status);
+        Mockito.verify(statusListController, Mockito.times(1)).updateValueList(status, "RUNNING");
     }
 
     @Test
     public void updateValueList() {
         Status status = Status.create("(CREATE) 1");
         statusListController.addElementToStatusList(status);
+        assertEquals("CREATE", statusModelmock.getElementByIndex(0).getStatus());
+
         Status status1 = Status.create("(SCHEDULING) 1");
-//        statusListController.updateValueList(status1, "SCHEDULING");
-//        assertEquals("SCHEDULING", statusListController.statusList.get(0).getStatus());
+        statusListController.updateValueList(status1, "RUNNING");
+        assertEquals("RUNNING", statusModelmock.getElementByIndex(0).getStatus());
+    }
+
+    @Test
+    public void addElementToStatusList() {
+        Status status = Status.create("(SCHEDULING) 1");
+        statusListController.addElementToStatusList(status);
+        Mockito.verify(statusModelmock, Mockito.times(1)).addElement(status);
     }
 }

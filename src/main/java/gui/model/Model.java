@@ -108,7 +108,6 @@ public class Model extends Observable implements ProcessManager {
 
     @Override
     public void pauseProcess(Process startedProcess, String filename) {
-        //TODO: controllare processo se è in pausa tramite POSIX
         try {
             int pid_process = executeProcessPid() + 1;
             if (!isPuased) {

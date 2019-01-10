@@ -1,5 +1,7 @@
-package gui.view;
+package gui.view.console;
 
+import gui.view.JavaFXInitTest;
+import gui.view.console.ConsoleView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,13 +20,13 @@ public class ConsoleViewTest {
 
     @Test
     public void create() {
-        ConsoleView consoleView = ConsoleView.create();
+        ConsoleView consoleView = (ConsoleView) ConsoleView.create();
         assertNotNull(consoleView);
     }
 
     @Test
     public void getConsole() {
-        ConsoleView consoleView = ConsoleView.create();
+        ConsoleView consoleView = (ConsoleView) ConsoleView.create();
         assertEquals(consoleView.console, consoleView.getConsole());
     }
 

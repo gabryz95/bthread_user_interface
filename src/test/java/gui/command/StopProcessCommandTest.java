@@ -6,9 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import static org.hamcrest.Matchers.any;
 import static org.junit.Assert.assertNull;
-
 
 
 public class StopProcessCommandTest {
