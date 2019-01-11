@@ -17,32 +17,19 @@ import static org.junit.Assert.*;
 
 public class MenuBarMediatorTest {
 
-    @Mock
     private MenuItemView startProcessMenuItem;
-    @Mock
     private MenuItemView pauseProcessMenuItem;
-    @Mock
     private MenuItemView stopProcessMenuItem;
-    @Mock
     private MenuItemView startMonitoringMenuItem;
-    @Mock
     private MenuItemView restartProcessMenuItem;
-    @Mock
     private MenuItemView aboutWindowItem;
-    @Mock
     private MenuItemView chooseFileMenuItem;
 
-    @Mock
     private SideButtonView startProcessSideButton;
-    @Mock
     private SideButtonView pauseProcessSideButton;
-    @Mock
     private SideButtonView stopProcessSideButton;
-    @Mock
     private SideButtonView restartProcessSideButton;
-    @Mock
     private SideButtonView startMonitoringSideButton;
-    @Mock
     private SideButtonView chooseFileSideButton;
 
     private MenuBarMediator menuBarMediator;

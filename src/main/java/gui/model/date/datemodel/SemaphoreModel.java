@@ -9,6 +9,9 @@ public class SemaphoreModel extends MyData {
 
     protected List<Semaphore> semaphoreList;
 
+    protected SemaphoreModel() {
+    }
+
     public static SemaphoreModel create(List<Semaphore> semaphoreList) {
 
         if (semaphoreList == null)

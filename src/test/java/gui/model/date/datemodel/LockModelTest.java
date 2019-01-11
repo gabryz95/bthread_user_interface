@@ -1,37 +1,65 @@
 package gui.model.date.datemodel;
 
+import gui.model.date.Lock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LockModelTest {
+public class LockModelTest {
+
+    private List<Lock> lockList;
+    private LockModel lockModel;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
+        lockList = new ArrayList<>();
+        lockModel = LockModel.create(lockList);
     }
 
     @Test
-    void create() {
+    public void create01() {
+        assertNull(LockModel.create(null));
     }
 
     @Test
-    void addElement() {
+    public void create02() {
+        assertNotNull(lockModel);
     }
 
     @Test
-    void deleteElement() {
+    public void addElement() {
+        lockModel.addElement(Mockito.mock(Lock.class));
+        assertEquals(1, lockList.size());
     }
 
     @Test
-    void updateElementStatus() {
+    public void deleteElement() {
+        lockModel.addElement(Mockito.mock(Lock.class));
+        assertEquals(1, lockList.size());
+
+        lockModel.deleteElement(0);
+        assertEquals(0, lockList.size());
     }
 
     @Test
-    void listSize() {
+    public void updateElementStatus() {
+
     }
 
     @Test
-    void getElementByIndex() {
+    public void listSize() {
+        assertEquals(lockList.size(), lockModel.listSize());
+    }
+
+    @Test
+    public void getElementByIndex() {
+        Lock lock = Mockito.mock(Lock.class);
+        lockModel.addElement(lock);
+        assertEquals(lock, lockModel.getElementByIndex(0));
     }
 }

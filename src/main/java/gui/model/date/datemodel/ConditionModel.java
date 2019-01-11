@@ -10,6 +10,9 @@ public class ConditionModel extends MyData {
 
     protected List<Condition> conditionList;
 
+    protected ConditionModel() {
+    }
+
     public static ConditionModel create(List<Condition> conditionList) {
 
         if (conditionList == null)

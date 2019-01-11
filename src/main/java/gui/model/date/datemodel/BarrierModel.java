@@ -9,6 +9,9 @@ public class BarrierModel extends MyData {
 
     protected List<Barrier> barrierList;
 
+    protected BarrierModel() {
+    }
+
     public static BarrierModel create(List<Barrier> barrierList) {
 
         if (barrierList == null)

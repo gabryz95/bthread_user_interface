@@ -9,6 +9,9 @@ public class MutexModel extends MyData {
 
     protected List<Mutex> mutexList;
 
+    protected MutexModel() {
+    }
+
     public static MutexModel create(List<Mutex> mutexList) {
 
         if (mutexList == null)
@@ -37,9 +40,5 @@ public class MutexModel extends MyData {
 
     public Mutex getElementByIndex(int index) {
         return mutexList.get(index);
-    }
-
-    public List<Mutex> getMutexList() {
-        return mutexList;
     }
 }

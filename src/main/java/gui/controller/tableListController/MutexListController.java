@@ -27,9 +27,9 @@ public class MutexListController extends ManageQueue {
     }
 
     protected void mutacuireFunction(Mutex mutex) {
-        final int size = mutexModel.getMutexList().size();
+        final int size = mutexModel.listSize();
         for (int i = 0; i < size; i++) {
-            Mutex element = mutexModel.getMutexList().get(i);
+            Mutex element = mutexModel.getElementByIndex(i);
             if (element.getAddress().equalsIgnoreCase(mutex.getAddress())) {
                 if (element.getThreadId() == mutex.getThreadId())
                     return;
@@ -42,9 +42,9 @@ public class MutexListController extends ManageQueue {
     }
 
     protected void mutreleaseFunction(Mutex mutex) {
-        final int size = mutexModel.getMutexList().size();
+        final int size = mutexModel.listSize();
         for (int i = 0; i < size; i++) {
-            Mutex element = mutexModel.getMutexList().get(i);
+            Mutex element = mutexModel.getElementByIndex(i);
             if (element.getAddress().equalsIgnoreCase(mutex.getAddress())) {
                 if (element.getThreadId() == mutex.getThreadId()) {
                     if (element.getQueue().isEmpty())
