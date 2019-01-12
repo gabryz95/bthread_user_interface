@@ -34,7 +34,7 @@ public class StartProcessCommandTest {
 
     @Test
     public void initProces01() {
-        startProcessCommand.createCommandProcess(receiver, filename);
+        //startProcessCommand.createCommandProcess(receiver, filename);
         assertNotNull(startProcessCommand.initProcess(filename));
     }
 }

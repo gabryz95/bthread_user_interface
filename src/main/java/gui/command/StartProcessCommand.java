@@ -1,14 +1,34 @@
 package gui.command;
 
+import gui.controller.ProcessController;
+import gui.model.ExecutableFile;
+
 import java.io.IOException;
 
 
 public class StartProcessCommand extends CommandAbs {
 
+    protected ExecutableFile executableFile;
+
+    protected StartProcessCommand() {
+    }
+
+    public static StartProcessCommand create(ProcessController receiver, ExecutableFile executableFile) {
+        if (receiver == null) {
+            return null;
+        }
+
+        StartProcessCommand command = new StartProcessCommand();
+        command.receiver = receiver;
+        command.executableFile = executableFile;
+
+        return command;
+    }
+
     @Override
     public void execute() throws IOException {
-        if (filename != null) {
-            receiver.startProcess(initProcess(filename), filename);
+        if (executableFile.getExecFile() != null) {
+            receiver.startProcess(initProcess(executableFile.getExecFile()), executableFile.getExecFile());
         }
     }
 

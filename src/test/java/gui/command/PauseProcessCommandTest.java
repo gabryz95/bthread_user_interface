@@ -27,7 +27,7 @@ public class PauseProcessCommandTest {
 
     @Test
     public void execute() {
-        pauseProcessCommand.createCommandProcess(receiver, filename);
+        //pauseProcessCommand.createCommandProcess(receiver, filename);
         pauseProcessCommand.execute();
         //TODO: da sistemare
         // Mockito.verify(receiver, Mockito.times(1)).pauseProcess(any(Process.class), any(String.class));

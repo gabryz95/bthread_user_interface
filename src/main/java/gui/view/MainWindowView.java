@@ -31,6 +31,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class MainWindowView {
 
+    //public static String EXECUTABLE_FILE = "";
+    public static ExecutableFile executableFile = new ExecutableFile();
+
     public GantChartInitialize gantChartInitialize;
     private static Parser parser;
     protected static MainWindowView ourInstance = new MainWindowView();
@@ -96,10 +99,10 @@ public class MainWindowView {
         //ConsoleOutput consoleOutput = (ConsoleOutput) ConsoleAbstract.create();
 
         //Menu Bar
-        MenuBarView menubar = MenuBarView.create(controller, aboutWindowController, exitController, chooseFileController);
+        MenuBarView menubar = MenuBarView.create(controller, aboutWindowController, exitController, chooseFileController, executableFile);
 
         //Side button bar
-        SideBarView sideLeftBar = SideBarView.create(controller, chooseFileController);
+        SideBarView sideLeftBar = SideBarView.create(controller, chooseFileController, executableFile);
 
         //Gantt
         gantChartInitialize = GantChartInitialize.create();

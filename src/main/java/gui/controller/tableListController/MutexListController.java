@@ -42,14 +42,15 @@ public class MutexListController extends ManageQueue {
     }
 
     protected void mutreleaseFunction(Mutex mutex) {
-        final int size = mutexModel.listSize();
+        int size = mutexModel.listSize();
         for (int i = 0; i < size; i++) {
             Mutex element = mutexModel.getElementByIndex(i);
             if (element.getAddress().equalsIgnoreCase(mutex.getAddress())) {
                 if (element.getThreadId() == mutex.getThreadId()) {
-                    if (element.getQueue().isEmpty())
+                    if (element.getQueue().isEmpty()) {
                         mutexModel.deleteElement(i);
-                    else
+                        size = mutexModel.listSize();
+                    } else
                         mutexModel.updateElementQueue(i, calculateNewQueue(element.getQueue()));
                     reloadData();
                 }

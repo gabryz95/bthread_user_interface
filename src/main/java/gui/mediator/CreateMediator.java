@@ -4,7 +4,6 @@ import gui.controller.tableListController.*;
 import gui.event.myDateEvent.*;
 import gui.model.date.*;
 import gui.model.date.datemodel.*;
-import javafx.collections.ObservableList;
 import lombok.Setter;
 
 import java.util.Observable;

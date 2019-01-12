@@ -1,13 +1,12 @@
 package gui.controller;
 
 import gui.interfaces.ChooserFileManager;
-import gui.interfaces.Controller;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 
-public class ChooseFileController extends Controller implements ChooserFileManager {
+public class ChooseFileController implements ChooserFileManager {
 
     protected Stage stage;
     protected ChooserFileManager receiver;

@@ -1,12 +1,15 @@
 package gui.controller;
 
-import gui.interfaces.Controller;
 import gui.interfaces.ProcessManager;
 
 import java.io.IOException;
 
-public class ProcessController extends Controller implements ProcessManager {
+public class ProcessController implements ProcessManager {
+
     private ProcessManager model;
+
+    protected ProcessController() {
+    }
 
     public static ProcessController create(ProcessManager model) {
         if (model == null) {

@@ -25,15 +25,31 @@ public class Parser extends Observable {
         return bthread;
     }
 
+    protected String StringMatching(String line) {
+
+        String discriminated = line.substring(1, 4);
+        String result = null;
+
+        if (discriminated.equalsIgnoreCase("MUT")) {
+            result = "Mutex";
+        } else if (discriminated.equalsIgnoreCase("SEM")) {
+            result = "Semaphore";
+        } else if (discriminated.equalsIgnoreCase("BAR")) {
+            result = "Barrier";
+        } else if (discriminated.equalsIgnoreCase("CON")) {
+            result = "Condition";
+        }
+
+        return result + "Event";
+    }
+
     public void parsing2(String line) {
 
         if (line == null)
             return;
 
-        if (!line.startsWith("(")) {
-            //System.out.println(line);
+        if (!line.startsWith("("))
             return;
-        }
 
         String discriminated = line.substring(1, 4);
 
@@ -56,4 +72,5 @@ public class Parser extends Observable {
         this.setChanged();
         notifyObservers(MyDataEventFactory.create("StatusEvent", line));
     }
+
 }

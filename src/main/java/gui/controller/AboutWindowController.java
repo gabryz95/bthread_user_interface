@@ -1,10 +1,9 @@
 package gui.controller;
 
 import gui.interfaces.AboutWindowManager;
-import gui.interfaces.Controller;
 import javafx.stage.Stage;
 
-public class AboutWindowController extends Controller implements AboutWindowManager {
+public class AboutWindowController implements AboutWindowManager {
 
     protected Stage stage;
     protected AboutWindowManager receiver;

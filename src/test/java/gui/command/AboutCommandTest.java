@@ -18,13 +18,13 @@ public class AboutCommandTest {
 
     @Before
     public void BeforeEachTestMethod() {
-        aboutCommand = new AboutCommand();
+        //aboutCommand = new AboutCommand();
         receiver = Mockito.mock(AboutWindowController.class);
     }
 
     @Test
     public void execute() {
-        aboutCommand.createAboutCommand(receiver);
+        //aboutCommand.createAboutCommand(receiver);
         aboutCommand.execute();
         Mockito.verify(receiver, Mockito.times(1)).aboutWindow();
     }

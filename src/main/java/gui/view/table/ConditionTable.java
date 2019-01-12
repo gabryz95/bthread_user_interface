@@ -1,6 +1,5 @@
 package gui.view.table;
 
-import gui.model.date.Barrier;
 import gui.model.date.Condition;
 import gui.style.Style;
 import javafx.collections.ObservableList;
@@ -24,8 +23,8 @@ public class ConditionTable {
         TableColumn conditionColumn = new TableColumn("CONDITION");
         TableColumn queueColumn = new TableColumn("QUEUE");
 
-        conditionColumn.setCellValueFactory(new PropertyValueFactory<Barrier, String>("address"));
-        queueColumn.setCellValueFactory(new PropertyValueFactory<Barrier, String>("queue"));
+        conditionColumn.setCellValueFactory(new PropertyValueFactory<Condition, String>("address"));
+        queueColumn.setCellValueFactory(new PropertyValueFactory<Condition, String>("queue"));
 
         conditionColumn.prefWidthProperty().bind(conditionTable.tableView.widthProperty().multiply(0.5));
         queueColumn.prefWidthProperty().bind(conditionTable.tableView.widthProperty().multiply(0.5));

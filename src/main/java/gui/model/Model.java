@@ -62,7 +62,6 @@ public class Model extends Observable implements ProcessManager {
         return model;
     }
 
-    //TODO: eliminare tutti gli elemnti delle liste delle tabelle quando rifaccio partire il processo
     @Override
     public void startProcess(Process initProcess, String filename) throws IOException {
         if (MainProcess.getMainProcess().getCurrentProcess() == null) {
@@ -131,8 +130,9 @@ public class Model extends Observable implements ProcessManager {
         startedProcess.destroyForcibly();
         MainProcess.getMainProcess().setCurrentProcess(null);
         try {
+            tableThread.join();
             startProcess(newProcess, filename);
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

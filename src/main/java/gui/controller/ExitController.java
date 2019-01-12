@@ -1,10 +1,9 @@
 package gui.controller;
 
-import gui.interfaces.Controller;
 import gui.interfaces.ExitManager;
 import javafx.stage.Stage;
 
-public class ExitController extends Controller implements ExitManager {
+public class ExitController implements ExitManager {
 
     protected Stage stage;
     protected ExitManager receiver;

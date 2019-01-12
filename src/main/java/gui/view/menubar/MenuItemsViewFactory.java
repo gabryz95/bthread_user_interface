@@ -1,7 +1,6 @@
 package gui.view.menubar;
 
 import gui.command.CommandAbs;
-import gui.interfaces.Controller;
 
 public class MenuItemsViewFactory {
 
@@ -13,8 +12,8 @@ public class MenuItemsViewFactory {
         return menuItemsViewFactory;
     }
 
-    public MenuItemView createMenuItem(String itemName, final CommandAbs command, final Controller controller) {
-        MenuItemView menuItemView = MenuItemView.create(itemName, command, controller);
+    public MenuItemView createMenuItem(String itemName, final CommandAbs command) {
+        MenuItemView menuItemView = MenuItemView.create(itemName, command);
         return menuItemView;
     }
 }

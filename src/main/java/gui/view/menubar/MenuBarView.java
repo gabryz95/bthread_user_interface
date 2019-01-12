@@ -5,14 +5,14 @@ import gui.controller.AboutWindowController;
 import gui.controller.ChooseFileController;
 import gui.controller.ExitController;
 import gui.controller.ProcessController;
+import gui.model.ExecutableFile;
+import gui.view.MainWindowView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 
 public class MenuBarView {
-
-    public static String EXECUTABLE_FILE = null;
 
     protected MenuItemView startItemMenu;
     protected MenuItemView pauseItemMenu;
@@ -23,26 +23,30 @@ public class MenuBarView {
     protected MenuItemView chooseFileItemMenu;
     protected MenuBar menuBar;
 
+    protected MenuBarView() {
+    }
+
+
     public static MenuBarView create(final ProcessController controller, final AboutWindowController aboutWindowController, final ExitController exitController,
-                                     final ChooseFileController chooseFileController) {
+                                     final ChooseFileController chooseFileController, final ExecutableFile executableFile) {
 
         MenuBarView menuBarView = new MenuBarView();
         menuBarView.menuBar = new MenuBar();
 
         //FILE MENU
         MenuItem newMenu = new MenuItem("New");
-        menuBarView.chooseFileItemMenu = MenuItemView.create("Open File", new ChooseFileCommand(), chooseFileController);
-        MenuItemView exitItemMenu = MenuItemsViewFactory.instance().createMenuItem("Exit", new ExitCommand(), exitController);
+        menuBarView.chooseFileItemMenu = MenuItemView.create("Open File", ChooseFileCommand.create(chooseFileController, executableFile));
+        MenuItemView exitItemMenu = MenuItemsViewFactory.instance().createMenuItem("Exit", ExitCommand.create(exitController));
 
         Menu fileMenu = MenuFactory.instance().createMenu("File");
         fileMenu.getItems().addAll(newMenu, menuBarView.chooseFileItemMenu.getMenuItem(), exitItemMenu.getMenuItem());
         //THREAD MENU
 
-        menuBarView.startItemMenu = MenuItemsViewFactory.instance().createMenuItem("Start", new StartProcessCommand(), controller);
-        menuBarView.pauseItemMenu = MenuItemsViewFactory.instance().createMenuItem("Pause", new PauseProcessCommand(), controller);
-        menuBarView.startMonitoringItemMenu = MenuItemsViewFactory.instance().createMenuItem("Monitoring", new StartMonitoringCommand(), controller);
-        menuBarView.stopItemMenu = MenuItemsViewFactory.instance().createMenuItem("Stop", new StopProcessCommand(), controller);
-        menuBarView.restartItemMenu = MenuItemsViewFactory.instance().createMenuItem("Restart", new RestartProcessCommand(), controller);
+        menuBarView.startItemMenu = MenuItemsViewFactory.instance().createMenuItem("Start", StartProcessCommand.create(controller, executableFile));
+        menuBarView.pauseItemMenu = MenuItemsViewFactory.instance().createMenuItem("Pause", PauseProcessCommand.create(controller, executableFile));
+        menuBarView.startMonitoringItemMenu = MenuItemsViewFactory.instance().createMenuItem("Monitoring", StartMonitoringCommand.create(controller));
+        menuBarView.stopItemMenu = MenuItemsViewFactory.instance().createMenuItem("Stop", StopProcessCommand.create(controller, executableFile));
+        menuBarView.restartItemMenu = MenuItemsViewFactory.instance().createMenuItem("Restart", RestartProcessCommand.create(controller, executableFile));
 
         SeparatorMenuItem separatorMenuItem1 = new SeparatorMenuItem();
         SeparatorMenuItem separatorMenuItem2 = new SeparatorMenuItem();
@@ -52,7 +56,7 @@ public class MenuBarView {
                 separatorMenuItem1, menuBarView.restartItemMenu.getMenuItem(), separatorMenuItem2, menuBarView.startMonitoringItemMenu.getMenuItem());
 
         //HELP MENU
-        menuBarView.aboutItemMenu = MenuItemsViewFactory.instance().createMenuItem("About", new AboutCommand(), aboutWindowController);
+        menuBarView.aboutItemMenu = MenuItemsViewFactory.instance().createMenuItem("About", AboutCommand.create(aboutWindowController));
         Menu helpMenu = new Menu("Help");
         helpMenu.getItems().addAll(menuBarView.aboutItemMenu.getMenuItem());
 

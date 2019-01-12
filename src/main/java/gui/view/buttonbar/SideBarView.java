@@ -3,6 +3,8 @@ package gui.view.buttonbar;
 import gui.command.*;
 import gui.controller.ChooseFileController;
 import gui.controller.ProcessController;
+import gui.model.ExecutableFile;
+import gui.view.MainWindowView;
 import javafx.scene.layout.VBox;
 
 public class SideBarView {
@@ -15,8 +17,11 @@ public class SideBarView {
     protected SideButtonView monitoringBtn;
     protected VBox sideLeftBar;
 
+    private SideBarView() {
 
-    public static SideBarView create(final ProcessController processController, final ChooseFileController chooseFileController) {
+    }
+
+    public static SideBarView create(final ProcessController processController, final ChooseFileController chooseFileController, final ExecutableFile executableFile) {
 
         if (processController == null)
             return null;
@@ -28,12 +33,12 @@ public class SideBarView {
         sideBarView.sideLeftBar = new VBox();
         sideBarView.sideLeftBar.getStyleClass().add("sidebar");
 
-        sideBarView.openBtn = SideButtonView.create("openBtn", new ChooseFileCommand(), chooseFileController);
-        sideBarView.startBtn = SideButtonView.create("startBtn", new StartProcessCommand(), processController);
-        sideBarView.stopBtn = SideButtonView.create("stopBtn", new StopProcessCommand(), processController);
-        sideBarView.pauseBtn = SideButtonView.create("pauseBtn", new PauseProcessCommand(), processController);
-        sideBarView.restartBtn = SideButtonView.create("restartBtn", new RestartProcessCommand(), processController);
-        sideBarView.monitoringBtn = SideButtonView.create("monitoringBtn", new StartMonitoringCommand(), processController);
+        sideBarView.openBtn = SideButtonView.create("openBtn", ChooseFileCommand.create(chooseFileController, executableFile));
+        sideBarView.startBtn = SideButtonView.create("startBtn", StartProcessCommand.create(processController, executableFile));
+        sideBarView.stopBtn = SideButtonView.create("stopBtn", StopProcessCommand.create(processController, executableFile));
+        sideBarView.pauseBtn = SideButtonView.create("pauseBtn", PauseProcessCommand.create(processController, executableFile));
+        sideBarView.restartBtn = SideButtonView.create("restartBtn", RestartProcessCommand.create(processController, executableFile));
+        sideBarView.monitoringBtn = SideButtonView.create("monitoringBtn", StartMonitoringCommand.create(processController));
 
         sideBarView.sideLeftBar.getChildren().addAll(sideBarView.openBtn.getSideButton(), sideBarView.startBtn.getSideButton(), sideBarView.stopBtn.getSideButton(),
                 sideBarView.pauseBtn.getSideButton(), sideBarView.restartBtn.getSideButton(), sideBarView.monitoringBtn.getSideButton());
