@@ -18,7 +18,7 @@ import static org.mockito.Mockito.verify;
 
 public class ProcessControllerTest {
 
-    @Mock
+
     ProcessManager processManager;
     private ProcessController processController;
 

@@ -20,7 +20,6 @@ public class StopProcessCommand extends CommandAbs {
         StopProcessCommand command = new StopProcessCommand();
         command.receiver = receiver;
         command.executableFile = executableFile;
-
         return command;
     }
 

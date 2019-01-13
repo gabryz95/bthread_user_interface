@@ -1,45 +1,44 @@
-//package gui.command;
-//
-//
-//import gui.controller.ProcessController;
-//import gui.singleton.MainProcess;
-//import org.junit.Before;
-//import org.junit.Test;
-//import org.mockito.Mock;
-//import org.mockito.Mockito;
-//
-//import static org.junit.Assert.*;
-//import static org.mockito.Matchers.any;
-//
-//public class RestartProcessCommandTest {
-//
-//
-//    private RestartProcessCommand restartProcessCommand;
-//
-//    @Mock
-//    private ProcessController receiver;
-//    private String filename;
-//
-//    @Before
-//    public void BeforeEachTestMethod() {
-//        restartProcessCommand = new RestartProcessCommand();
-//        receiver = Mockito.mock(ProcessController.class);
-//        filename = "/Users/gabrielezorloni/Desktop/Archive/philosophers";
-//    }
-//
-//    //controllo che i parametri che gli passo non siano null se non si rompe tutto
-//    @Test
-//    public void execute() {
-//        MainProcess mainProcess = Mockito.mock(MainProcess.class);
-//        restartProcessCommand.createCommandProcess(receiver, filename);
-//        restartProcessCommand.execute();
-//        //Mockito.verify(receiver, Mockito.times(1)).restartProcess(any(Process.class), restartProcessCommand.initProcess(filename));
-//
-//    }
-//
-//    @Test
-//    public void initProces01() {
-//        restartProcessCommand.createCommandProcess(receiver, filename);
-//        assertNotNull(restartProcessCommand.initProcess(filename));
-//    }
-//}
+package gui.command;
+
+
+import gui.controller.ProcessController;
+import gui.model.ExecutableFile;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mockito;
+
+import static org.junit.Assert.*;
+
+public class RestartProcessCommandTest {
+
+
+    private ProcessController receiver;
+    private ExecutableFile executableFile;
+    private RestartProcessCommand restartProcessCommand;
+
+    @Before
+    public void BeforeEachTestMethod() {
+        receiver = Mockito.mock(ProcessController.class);
+        executableFile = new ExecutableFile();
+        executableFile.setExecFile("./executableFiles/philosophers");
+        restartProcessCommand = Mockito.spy(RestartProcessCommand.create(receiver, executableFile));
+        Mockito.doReturn(null).when(restartProcessCommand).getProcess();
+        Mockito.doReturn(null).when(restartProcessCommand).initProcess(executableFile.getExecFile());
+    }
+
+    @Test
+    public void execute01() {
+        assertNull(RestartProcessCommand.create(null, executableFile));
+    }
+
+    @Test
+    public void execute02() {
+        assertNull(RestartProcessCommand.create(receiver, null));
+    }
+
+    @Test
+    public void execute03() {
+        assertNotNull(restartProcessCommand);
+    }
+
+}

@@ -14,9 +14,11 @@ public class RestartProcessCommand extends CommandAbs {
     }
 
     public static RestartProcessCommand create(ProcessController receiver, ExecutableFile executableFile) {
-        if (receiver == null) {
+        if (receiver == null)
             return null;
-        }
+
+        if (executableFile == null)
+            return null;
 
         RestartProcessCommand command = new RestartProcessCommand();
         command.receiver = receiver;

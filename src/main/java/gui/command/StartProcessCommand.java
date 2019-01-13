@@ -14,9 +14,10 @@ public class StartProcessCommand extends CommandAbs {
     }
 
     public static StartProcessCommand create(ProcessController receiver, ExecutableFile executableFile) {
-        if (receiver == null) {
+        if (receiver == null)
             return null;
-        }
+        if (executableFile == null)
+            return null;
 
         StartProcessCommand command = new StartProcessCommand();
         command.receiver = receiver;

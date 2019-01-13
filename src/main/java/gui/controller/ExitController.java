@@ -30,4 +30,8 @@ public class ExitController implements ExitManager {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
+
+    public void closeStage() {
+        stage.close();
+    }
 }

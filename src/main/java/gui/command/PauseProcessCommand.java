@@ -30,7 +30,7 @@ public class PauseProcessCommand extends CommandAbs {
         }
     }
 
-    private Process getProcess() {
+    protected Process getProcess() {
         return MainProcess.getMainProcess().getCurrentProcess();
     }
 

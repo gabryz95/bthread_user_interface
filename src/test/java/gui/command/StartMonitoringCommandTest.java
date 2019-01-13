@@ -4,30 +4,35 @@ package gui.command;
 import gui.controller.ProcessController;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 
 
 public class StartMonitoringCommandTest {
 
-    private StartMonitoringCommand startMonitoringCommand;
-
-    @Mock
     private ProcessController receiver;
-    private String filename;
+    private StartMonitoringCommand startMonitoringCommand;
 
     @Before
     public void BeforeEachTestMethod() {
-        startMonitoringCommand = new StartMonitoringCommand();
         receiver = Mockito.mock(ProcessController.class);
-        filename = "nomefile";
+        startMonitoringCommand = StartMonitoringCommand.create(receiver);
+    }
+
+    @Test
+    public void create01() {
+        assertNull(StartMonitoringCommand.create(null));
+    }
+
+    @Test
+    public void create02() {
+        assertNotNull(startMonitoringCommand);
     }
 
     @Test
     public void execute() {
-        //startMonitoringCommand.createCommandProcess(receiver, filename);
         startMonitoringCommand.execute();
         Mockito.verify(receiver, Mockito.times(1)).startMonitoring(any(Process.class));
     }

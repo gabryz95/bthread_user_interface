@@ -73,7 +73,7 @@ public class Model extends Observable implements ProcessManager {
             tableThread.start();
             ganttThread = new Thread(MainWindowView.getInstance().gantChartInitialize);
             ganttThread.setDaemon(true);
-            //ganttThread.start();
+            ganttThread.start();
             this.setChanged();
             notifyObservers(new StartEvent(filename));
         } else {

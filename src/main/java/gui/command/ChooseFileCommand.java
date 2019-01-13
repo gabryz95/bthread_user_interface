@@ -1,10 +1,7 @@
 package gui.command;
 
 import gui.controller.ChooseFileController;
-import gui.model.ChooseFile;
 import gui.model.ExecutableFile;
-import gui.view.MainWindowView;
-import gui.view.menubar.MenuBarView;
 
 import java.io.File;
 
@@ -17,6 +14,8 @@ public class ChooseFileCommand extends CommandAbs {
 
     public static ChooseFileCommand create(ChooseFileController chooseFileController, ExecutableFile executableFile) {
         if (chooseFileController == null)
+            return null;
+        if (executableFile == null)
             return null;
 
         ChooseFileCommand chooseFileCommand = new ChooseFileCommand();

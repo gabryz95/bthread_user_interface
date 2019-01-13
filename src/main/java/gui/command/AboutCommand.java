@@ -4,7 +4,7 @@ import gui.controller.AboutWindowController;
 
 public class AboutCommand extends CommandAbs {
 
-    private AboutCommand() {
+    protected AboutCommand() {
     }
 
     public static AboutCommand create(AboutWindowController aboutWindowController) {

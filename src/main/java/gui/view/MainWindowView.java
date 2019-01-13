@@ -31,7 +31,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class MainWindowView {
 
-    //public static String EXECUTABLE_FILE = "";
     public static ExecutableFile executableFile = new ExecutableFile();
 
     public GantChartInitialize gantChartInitialize;

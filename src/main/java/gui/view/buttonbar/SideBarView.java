@@ -27,6 +27,8 @@ public class SideBarView {
             return null;
         if (chooseFileController == null)
             return null;
+        if (executableFile == null)
+            return null;
 
         SideBarView sideBarView = new SideBarView();
 

@@ -15,9 +15,9 @@ public class OutputProcessingThread extends Observable implements Runnable {
 
     private static List<Bthread> bthreadList = MainWindowView.bthreadList.get();
     public static AtomicBoolean listIsReady = new AtomicBoolean(false);
-    private AtomicBoolean isMonitoring = new AtomicBoolean(false);
-    private Process process;
-    private Parser parser;
+    protected AtomicBoolean isMonitoring = new AtomicBoolean(false);
+    protected Process process;
+    protected Parser parser;
 
     public static OutputProcessingThread create(final Process process, final ObserverList observerList, final Parser parser) {
 

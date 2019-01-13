@@ -1,47 +1,57 @@
 package gui.command;
 
 import gui.controller.ProcessController;
+import gui.model.ExecutableFile;
+import gui.singleton.MainProcess;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 
 public class StopProcessCommandTest {
 
-    private StopProcessCommand stopProcessCommand;
-
-    @Mock
     private ProcessController receiver;
-    private String filename;
+    private ExecutableFile executableFile;
+    private StopProcessCommand stopProcessCommand;
 
 
     @Before
     public void BeforeEachTestMethod() {
-        stopProcessCommand = new StopProcessCommand();
+
         receiver = Mockito.mock(ProcessController.class);
-        filename = "/Users/gabrielezorloni/Desktop/Archive/philosophers";
+        executableFile = new ExecutableFile();
+        executableFile.setExecFile("./executableFiles/matrix_cube");
+        stopProcessCommand = Mockito.spy(StopProcessCommand.create(receiver, executableFile));
+        Mockito.doReturn(Mockito.mock(Process.class)).when(stopProcessCommand).stopProcess();
     }
 
-//    @Test
-//    public void execute() {
-//        stopProcessCommand.createCommandProcess(receiver, filename);
-//        stopProcessCommand.execute();
-//        Mockito.verify(receiver, Mockito.times(1)).stopProcess(stopProcessCommand.stopProcess(), filename);
-//    }
-//
-//    @Test
-//    public void stopProcess01() {
-//        stopProcessCommand.createCommandProcess(receiver, filename);
-//        assertNull(stopProcessCommand.stopProcess());
-//    }
+    @Test
+    public void create01() {
+        assertNull(StopProcessCommand.create(null, executableFile));
+    }
+
+    @Test
+    public void create02() {
+        assertNull(StopProcessCommand.create(receiver, null));
+    }
+
+    @Test
+    public void create03() {
+        assertNotNull(stopProcessCommand);
+    }
+
+    @Test
+    public void execute() {
+        stopProcessCommand.execute();
+        Mockito.verify(receiver, Mockito.times(1)).stopProcess(stopProcessCommand.stopProcess(), executableFile.getExecFile());
+    }
 
     @Test
     public void stopProcess02() {
-        stopProcessCommand = Mockito.mock(StopProcessCommand.class);
-        stopProcessCommand.stopProcess();
-        Mockito.verify(stopProcessCommand, Mockito.times(1)).stopProcess();
+        assertNotNull(stopProcessCommand.stopProcess());
     }
 }

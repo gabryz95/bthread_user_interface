@@ -143,8 +143,6 @@ public class MenuBarMediatorTest {
         assertEquals(menuBarMediator.chooseFileSideButton, chooseFileSideButton);
     }
 
-
-    @Ignore
     @Test
     public void itemSetting() {
 //        Observable observable = Mockito.mock(Observable.class);
