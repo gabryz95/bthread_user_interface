@@ -26,12 +26,14 @@ public class Model extends Observable implements ProcessManager {
     protected ObservableList<Semaphore> semaphoreList;
     protected ObservableList<Barrier> barrierList;
     protected ObservableList<Condition> conditionList;
+    protected ObservableList<Gantt> ganttList;
+
     protected volatile boolean isPuased = false;
 
 
     //singleton
-    public static Model create(Parser parser, ObservableList<Status> statusList, ObservableList<Lock> lockList, ObservableList<Mutex> mutexList, ObservableList<Semaphore> semaphoreList,
-                               ObservableList<Barrier> barrierList, ObservableList<Condition> conditionList) {
+    public static Model create(Parser parser, OutputProcessingThread opt, ObservableList<Status> statusList, ObservableList<Lock> lockList, ObservableList<Mutex> mutexList, ObservableList<Semaphore> semaphoreList,
+                               ObservableList<Barrier> barrierList, ObservableList<Condition> conditionList, ObservableList<Gantt> ganttList) {
 
         if (parser == null)
             return null;
@@ -47,6 +49,8 @@ public class Model extends Observable implements ProcessManager {
             return null;
         if (conditionList == null)
             return null;
+        if (ganttList == null)
+            return null;
 
         if (model == null) {
             model = new Model();
@@ -57,6 +61,8 @@ public class Model extends Observable implements ProcessManager {
             model.semaphoreList = semaphoreList;
             model.barrierList = barrierList;
             model.conditionList = conditionList;
+            model.ganttList = ganttList;
+            model.opt = opt;
         }
         return model;
     }
@@ -66,12 +72,15 @@ public class Model extends Observable implements ProcessManager {
         if (MainProcess.getMainProcess().getCurrentProcess() == null) {
             MainProcess.getMainProcess().setCurrentProcess(initProcess);
             clearList();
-            opt = OutputProcessingThread.create(initProcess, MainWindowView.getObserverList(), parser);
+            opt.setProcess(initProcess);
             tableThread = new Thread(opt);
             tableThread.setDaemon(false);
             tableThread.start();
             this.setChanged();
             notifyObservers(new StartEvent(filename));
+            this.setChanged();
+            notifyObservers(new NewGantProcess());
+
         } else {
             throw new IOException("start process is not null");
         }
@@ -139,6 +148,7 @@ public class Model extends Observable implements ProcessManager {
         semaphoreList.clear();
         barrierList.clear();
         conditionList.clear();
+        ganttList.clear();
     }
 
     private int executeProcessPid() throws IOException {

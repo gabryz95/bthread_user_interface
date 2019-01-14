@@ -33,11 +33,6 @@ public class GanttListController extends Observable {
                 this.setChanged();
                 notifyObservers(new GanttEventScheduling(gantt.getThreadId()));
             }
-//            } else {
-//                this.setChanged();
-//                notifyObservers(new GanttThreadEvent(ganttModel.listSize()));
-//                updateValueList(gantt, statusValue);
-//            }
         }
     }
 

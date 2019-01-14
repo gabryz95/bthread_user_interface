@@ -37,7 +37,6 @@ public class MainWindowView {
     public GantChartInitialize gantChartInitialize;
     private static Parser parser;
     protected static MainWindowView ourInstance = new MainWindowView();
-    protected static ObserverList observerList = new ObserverList();
     protected static AboutWindowView aboutWindowView;
 
     //tabelle
@@ -69,7 +68,8 @@ public class MainWindowView {
 
         //Parser instance
         parser = new Parser();
-        Model model = Model.create(parser, statusList, lockList, mutexList, semaphoreList, barrierList, conditionList);
+        OutputProcessingThread opt = OutputProcessingThread.create(parser);
+        Model model = Model.create(parser, opt, statusList, lockList, mutexList, semaphoreList, barrierList, conditionList, ganttList);
 
         //Model instance
         AboutWindow aboutWindow = new AboutWindow();
@@ -199,19 +199,19 @@ public class MainWindowView {
 
         //observer
         //add observer
+        opt.addObserver(console);
         ganttListController.addObserver(gantChartInitialize);
         parser.addObserver(createMediator);
         parser.addObserver(gantChartInitialize);
         model.addObserver(console);
         model.addObserver(menuBarMediator);
+        model.addObserver(gantChartInitialize);
         aboutWindow.addObserver(aboutWindowView);
         aboutWindow.addObserver(console);
         exit.addObserver(console);
         chooseFile.addObserver(console);
         chooseFile.addObserver(menuBarMediator);
 
-        //add observer to observerList
-        observerList.add(console);
     }
 
     private MainWindowView() {
@@ -219,9 +219,5 @@ public class MainWindowView {
 
     public static MainWindowView getInstance() {
         return ourInstance;
-    }
-
-    public static ObserverList getObserverList() {
-        return observerList;
     }
 }

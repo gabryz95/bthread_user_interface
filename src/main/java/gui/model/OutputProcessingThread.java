@@ -1,13 +1,11 @@
 package gui.model;
 
 import gui.event.NewLineReadEvent;
-import gui.view.MainWindowView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -17,22 +15,12 @@ public class OutputProcessingThread extends Observable implements Runnable {
     protected Process process;
     protected Parser parser;
 
-    public static OutputProcessingThread create(final Process process, final ObserverList observerList, final Parser parser) {
-
-        if (process == null)
-            return null;
-
-        if (observerList == null)
-            return null;
-
+    public static OutputProcessingThread create(final Parser parser) {
         if (parser == null)
             return null;
 
         OutputProcessingThread outputProcessingThread = new OutputProcessingThread();
-        outputProcessingThread.process = process;
         outputProcessingThread.parser = parser;
-        for (int i = 0; i < observerList.size(); i++)
-            outputProcessingThread.addObserver(observerList.getObserver(i));
         return outputProcessingThread;
     }
 
@@ -62,6 +50,10 @@ public class OutputProcessingThread extends Observable implements Runnable {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setProcess(Process process) {
+        this.process = process;
     }
 
     void setIsMonitoring(boolean flag) {
