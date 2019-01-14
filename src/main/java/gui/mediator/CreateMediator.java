@@ -59,6 +59,8 @@ public class CreateMediator implements Observer {
             statusListController.controll((Status) ((StatusEvent) event).getData());
         } else if (event instanceof LockEvent) {
             lockListController.controll((Lock) ((LockEvent) event).getData());
+        } else if (event instanceof GanttEvent) {
+            //gantListController.controll((Status) ((StatusEvent) event).getData());
         }
     }
 }

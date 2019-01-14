@@ -3,6 +3,7 @@ package gui.controller.tableListController;
 import gui.model.date.Status;
 import gui.model.date.datemodel.StatusModel;
 import gui.view.MainWindowView;
+import gui.view.ganttchart.GantChartInitialize;
 import javafx.collections.ObservableList;
 
 public class StatusListController {
@@ -39,6 +40,7 @@ public class StatusListController {
     }
 
     protected void updateValueList(Status status, String value) {
+        GantChartInitialize.ready = true;
         for (int i = 0; i < statusModel.listSize(); i++) {
             Status element = statusModel.getElementByIndex(i);
             if (element.getThreadId() == status.getThreadId()) {

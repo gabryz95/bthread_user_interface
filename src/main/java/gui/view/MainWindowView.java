@@ -54,7 +54,7 @@ public class MainWindowView {
     private static ObservableList<Semaphore> semaphoreList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Barrier> barrierList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Condition> conditionList = FXCollections.observableArrayList(new ArrayList<>());
-    public static AtomicReference<List<Bthread>> bthreadList = new AtomicReference<>(new ArrayList<>());
+    public static AtomicReference<List<Status>> ganttList = new AtomicReference<>(new ArrayList<>());
 
 
     //TODO: creare qui OPT e passare questa ref al model
@@ -105,7 +105,8 @@ public class MainWindowView {
 
         //Gantt
         gantChartInitialize = GantChartInitialize.create();
-        gantChartInitialize.setBthreadList(bthreadList.get());
+        gantChartInitialize.setGanttList(statusList);
+        gantChartInitialize.init(5);
 
         //About Window
         aboutWindowView = new AboutWindowView();
@@ -197,6 +198,7 @@ public class MainWindowView {
         //observer
         //add observer
         parser.addObserver(createMediator);
+        parser.addObserver(gantChartInitialize);
         model.addObserver(console);
         model.addObserver(menuBarMediator);
         aboutWindow.addObserver(aboutWindowView);
