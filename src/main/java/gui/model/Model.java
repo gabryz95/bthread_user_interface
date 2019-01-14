@@ -19,7 +19,6 @@ public class Model extends Observable implements ProcessManager {
     protected OutputProcessingThread opt;
     protected static Model model;
     protected Thread tableThread;
-    //protected Thread ganttThread;
     protected Parser parser;
     protected ObservableList<Status> statusList;
     private ObservableList<Lock> lockList;
@@ -71,9 +70,6 @@ public class Model extends Observable implements ProcessManager {
             tableThread = new Thread(opt);
             tableThread.setDaemon(false);
             tableThread.start();
-//            ganttThread = new Thread(MainWindowView.getInstance().gantChartInitialize);
-//            ganttThread.setDaemon(true);
-//            ganttThread.start();
             this.setChanged();
             notifyObservers(new StartEvent(filename));
         } else {

@@ -13,8 +13,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class OutputProcessingThread extends Observable implements Runnable {
 
-    //private static List<Bthread> bthreadList = MainWindowView.bthreadList.get();
-    public static AtomicBoolean listIsReady = new AtomicBoolean(false);
     protected AtomicBoolean isMonitoring = new AtomicBoolean(false);
     protected Process process;
     protected Parser parser;

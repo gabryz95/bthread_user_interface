@@ -18,9 +18,10 @@ public class CreateMediator implements Observer {
     protected SemaphoreListController semaphoreListController;
     protected BarrierListController barrierListController;
     protected ConditionListController conditionListController;
+    protected GanttListController ganttListController;
 
     public static CreateMediator create(StatusModel statusModel, LockModel lockModel, MutexModel mutexModel, SemaphoreModel semaphoreModel,
-                                        BarrierModel barrierModel, ConditionModel conditionModel) {
+                                        BarrierModel barrierModel, ConditionModel conditionModel, GanttModel ganttModel) {
 
         if (statusModel == null)
             return null;
@@ -33,6 +34,8 @@ public class CreateMediator implements Observer {
         if (barrierModel == null)
             return null;
         if (conditionModel == null)
+            return null;
+        if (ganttModel == null)
             return null;
 
         CreateMediator createMediator = new CreateMediator();
@@ -60,7 +63,7 @@ public class CreateMediator implements Observer {
         } else if (event instanceof LockEvent) {
             lockListController.controll((Lock) ((LockEvent) event).getData());
         } else if (event instanceof GanttEvent) {
-            //gantListController.controll((Status) ((StatusEvent) event).getData());
+            ganttListController.controll((Gantt) ((GanttEvent) event).getData());
         }
     }
 }

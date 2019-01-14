@@ -4,6 +4,7 @@ import gui.controller.AboutWindowController;
 import gui.controller.ChooseFileController;
 import gui.controller.ExitController;
 import gui.controller.ProcessController;
+import gui.controller.tableListController.GanttListController;
 import gui.mediator.CreateMediator;
 import gui.mediator.MenuBarMediator;
 import gui.model.*;
@@ -54,7 +55,7 @@ public class MainWindowView {
     private static ObservableList<Semaphore> semaphoreList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Barrier> barrierList = FXCollections.observableArrayList(new ArrayList<>());
     private static ObservableList<Condition> conditionList = FXCollections.observableArrayList(new ArrayList<>());
-    public static AtomicReference<List<Status>> ganttList = new AtomicReference<>(new ArrayList<>());
+    public static ObservableList<Gantt> ganttList = FXCollections.observableArrayList(new ArrayList<>());
 
 
     //TODO: creare qui OPT e passare questa ref al model
@@ -82,9 +83,11 @@ public class MainWindowView {
         BarrierModel barrierModel = BarrierModel.create(barrierList);
         SemaphoreModel semaphoreModel = SemaphoreModel.create(semaphoreList);
         ConditionModel conditionModel = ConditionModel.create(conditionList);
+        GanttModel ganttModel = GanttModel.create(ganttList);
         //Controllers
         ProcessController controller = ProcessController.create(model);
         AboutWindowController aboutWindowController = AboutWindowController.create(primaryStage, aboutWindow);
+        GanttListController ganttListController = GanttListController.create(ganttModel);
 
         ExitController exitController = ExitController.create(exit);
         exitController.setStage(primaryStage);
@@ -105,8 +108,6 @@ public class MainWindowView {
 
         //Gantt
         gantChartInitialize = GantChartInitialize.create();
-        gantChartInitialize.setGanttList(statusList);
-        gantChartInitialize.init(5);
 
         //About Window
         aboutWindowView = new AboutWindowView();
@@ -122,7 +123,8 @@ public class MainWindowView {
 
         //Mediators
         CreateMediator createMediator = CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel,
-                barrierModel, conditionModel);
+                barrierModel, conditionModel, ganttModel);
+        createMediator.setGanttListController(ganttListController);
 
         MenuBarMediator menuBarMediator = MenuBarMediator.create();
 
@@ -197,6 +199,7 @@ public class MainWindowView {
 
         //observer
         //add observer
+        ganttListController.addObserver(gantChartInitialize);
         parser.addObserver(createMediator);
         parser.addObserver(gantChartInitialize);
         model.addObserver(console);

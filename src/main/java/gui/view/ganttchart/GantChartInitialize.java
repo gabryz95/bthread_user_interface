@@ -1,7 +1,8 @@
 package gui.view.ganttchart;
 
-import gui.event.myDateEvent.StatusEvent;
-import gui.model.date.Status;
+import gui.event.GanttEventScheduling;
+import gui.event.GanttThreadEvent;
+
 import javafx.application.Platform;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -23,10 +24,8 @@ public class GantChartInitialize implements Observer {
 
     private List<XYChart.Series> seriesList = new ArrayList<>();
     private static List<String> threads = new ArrayList<>();
-    protected List<Status> statusList;
 
     private AtomicInteger tick = new AtomicInteger(0);
-    public static volatile boolean ready = false;
 
 
     //funzione per inizializzare il gantt
@@ -50,77 +49,42 @@ public class GantChartInitialize implements Observer {
         if (n == 0)
             return;
 
-        for (int i = 0; i < n; i++) {
-            threads.add("Thread " + (i + 1));
-            XYChart.Series serie = new XYChart.Series();
-            serie.getData().add(new XYChart.Data(0, threads.get(i), new GanttChart.ExtraData(0, "status-blue")));
-            seriesList.add(serie);
-            chart.getData().add(seriesList.get(i));
+        if (seriesList.size() == 0) {
+            for (int i = 0; i < n; i++) {
+                threads.add("Thread " + (i + 1));
+                XYChart.Series serie = new XYChart.Series();
+                serie.getData().add(new XYChart.Data(0, threads.get(i), new GanttChart.ExtraData(0, "status-blue")));
+                seriesList.add(serie);
+                chart.getData().add(seriesList.get(i));
+            }
         }
-
         chart.getStylesheets().add("ganttchart.css");
-
     }
 
     @Override
     public void update(Observable o, Object event) {
-        if (event instanceof StatusEvent) {
-            if (ready)
-                if (((StatusEvent) event).getData() != null)
-                    for (int i = 0; i < seriesList.size(); i++) {
-                        final int counter = i;
-                        if (((StatusEvent) event).getData().getThreadId() == (i + 1)) {
-                            if (((StatusEvent) event).getData().getStatus().equalsIgnoreCase("SCHEDULING")) {
-                                Platform.runLater(() -> {
-                                    seriesList.get(counter).getData().add(new XYChart.Data<>(tick.getAndIncrement(), threads.get(counter), new GanttChart.ExtraData(1, "status-blue")));
-                                    chart.getData().retainAll(seriesList);
-                                    try {
-                                        chart.getData().add(seriesList.get(counter));
-                                    } catch (IllegalArgumentException e) {
+        if (event instanceof GanttEventScheduling) {
+            for (int i = 0; i < seriesList.size(); i++) {
+                final int counter = i;
+                if (((GanttEventScheduling) event).getThreadNumber() == (i + 1)) {
+                    Platform.runLater(() -> {
+                        seriesList.get(counter).getData().add(new XYChart.Data<>(tick.getAndIncrement(), threads.get(counter), new GanttChart.ExtraData(1, "status-blue")));
+                        chart.getData().retainAll(seriesList);
+                        try {
+                            chart.getData().add(seriesList.get(counter));
+                        } catch (IllegalArgumentException e) {
 
-                                    }
-                                });
-                            }
                         }
-                    }
+                    });
+                }
+            }
+        } else if (event instanceof GanttThreadEvent) {
+            this.init(((GanttThreadEvent) event).getN());
         }
     }
-
-
-//    //Funzione per eliminare i dati da gant
-//    @Override
-//    public void run() {
-//
-//
-//        while (isRunning) {
-//            try {
-//                Thread.sleep(200);
-//                for (int i = 0; i < seriesList.size(); i++) {
-//                    final int counter = i;
-//                    if (statusList.get(counter).getStatus().equalsIgnoreCase("SCHEDULING"))
-//                        Platform.runLater(() -> {
-//                            seriesList.get(counter).getData().add(new XYChart.Data<>(tick.getAndIncrement(), threads.get(counter), new GanttChart.ExtraData(1, "status-blue")));
-//                            chart.getData().retainAll(seriesList);
-//                            try {
-//                                chart.getData().add(seriesList.get(counter));
-//                            } catch (IllegalArgumentException e) {
-//
-//                            }
-//                        });
-//                }
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//                throw new RuntimeException(e);
-//            }
-//        }
-//
-//    }
 
     public GanttChart<Number, String> getChart() {
         return chart;
     }
 
-    public void setGanttList(List<Status> statusList) {
-        this.statusList = statusList;
-    }
 }

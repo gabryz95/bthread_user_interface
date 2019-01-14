@@ -22,6 +22,7 @@ public class CreateMediatorTest {
     private SemaphoreListController semaphoreListController;
     private BarrierListController barrierListController;
     private ConditionListController conditionListController;
+    private GanttListController ganttListController;
 
     private StatusModel statusModel;
     private LockModel lockModel;
@@ -29,6 +30,7 @@ public class CreateMediatorTest {
     private SemaphoreModel semaphoreModel;
     private BarrierModel barrierModel;
     private ConditionModel conditionModel;
+    private GanttModel ganttModel;
 
     private CreateMediator createMediator;
 
@@ -40,6 +42,7 @@ public class CreateMediatorTest {
         semaphoreListController = Mockito.mock(SemaphoreListController.class);
         barrierListController = Mockito.mock(BarrierListController.class);
         conditionListController = Mockito.mock(ConditionListController.class);
+        ganttListController = Mockito.mock(GanttListController.class);
 
         statusModel = Mockito.mock(StatusModel.class);
         lockModel = Mockito.mock(LockModel.class);
@@ -47,19 +50,20 @@ public class CreateMediatorTest {
         semaphoreModel = Mockito.mock(SemaphoreModel.class);
         barrierModel = Mockito.mock(BarrierModel.class);
         conditionModel = Mockito.mock(ConditionModel.class);
+        ganttModel = Mockito.mock(GanttModel.class);
 
-        createMediator = CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel, barrierModel, conditionModel);
+        createMediator = CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel, barrierModel, conditionModel, ganttModel);
     }
 
     @Test
     public void create01() {
-        assertNull(CreateMediator.create(null, lockModel, mutexModel, semaphoreModel, barrierModel, conditionModel));
-        assertNull(CreateMediator.create(statusModel, null, mutexModel, semaphoreModel, barrierModel, conditionModel));
-        assertNull(CreateMediator.create(statusModel, lockModel, null, semaphoreModel, barrierModel, conditionModel));
-        assertNull(CreateMediator.create(statusModel, lockModel, mutexModel, null, barrierModel, conditionModel));
-        assertNull(CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel, null, conditionModel));
-        assertNull(CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel, barrierModel, null));
-
+        assertNull(CreateMediator.create(null, lockModel, mutexModel, semaphoreModel, barrierModel, conditionModel, ganttModel));
+        assertNull(CreateMediator.create(statusModel, null, mutexModel, semaphoreModel, barrierModel, conditionModel, ganttModel));
+        assertNull(CreateMediator.create(statusModel, lockModel, null, semaphoreModel, barrierModel, conditionModel, ganttModel));
+        assertNull(CreateMediator.create(statusModel, lockModel, mutexModel, null, barrierModel, conditionModel, ganttModel));
+        assertNull(CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel, null, conditionModel, ganttModel));
+        assertNull(CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel, barrierModel, null, ganttModel));
+        assertNull(CreateMediator.create(statusModel, lockModel, mutexModel, semaphoreModel, barrierModel, conditionModel, null));
     }
 
 

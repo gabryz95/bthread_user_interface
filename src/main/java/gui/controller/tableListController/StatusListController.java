@@ -40,7 +40,6 @@ public class StatusListController {
     }
 
     protected void updateValueList(Status status, String value) {
-        GantChartInitialize.ready = true;
         for (int i = 0; i < statusModel.listSize(); i++) {
             Status element = statusModel.getElementByIndex(i);
             if (element.getThreadId() == status.getThreadId()) {
